@@ -19,6 +19,9 @@ import "regenerator-runtime/runtime"
 import './reset.css'
 
 import Gallery from './src/components/gallery'
+import Editor from './src/components/editor'
+
+//Editor
 
 import store from './src/store'
 import theme from './src/theme'
@@ -36,7 +39,7 @@ Sentry.init({
 const App = () => (
   <Provider store={store}>
     <ThemeProvider theme={theme}>
-      <Gallery />
+      <Editor />
     </ThemeProvider>
   </Provider>
 )
