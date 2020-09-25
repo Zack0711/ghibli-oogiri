@@ -1,0 +1,22 @@
+@import '../../../mixin'
+
+.palette
+  padding 4px 0
+  flex-wrap wrap
+  $display-flex()
+  
+  &__color-wrap
+    flex-basis 270px
+    flex-wrap wrap
+    $display-flex()
+
+  &__color-block
+    cursor pointer
+    border 1px solid transparent
+    width 16px
+    height 32px
+    background url('./trans-pattern-s.jpg')
+    
+    &--active
+      border-color #666
+    

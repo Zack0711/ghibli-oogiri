@@ -1,0 +1,20 @@
+@import '../../mixin'
+
+.editor
+  width 100vw
+  height 100vh
+  flex-wrap wrap
+  $display-flex()
+  
+  &__wrap
+    max-width 768px
+  
+  &__aside
+    margin 8px 0 0 0
+    $display-flex()
+  
+  &__aside--tool
+    $display-flex(column)
+  
+  &__modal
+    $display-flex()
