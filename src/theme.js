@@ -42,6 +42,10 @@ export default {
         lineHeight: 1,
         minWidth: 24,
         borderRadius: 0,
+        padding: '6px 8px'
+      },
+      contained: {
+        boxShadow: 'none',
       },
     },
     MuiIconButton: {
@@ -57,6 +61,17 @@ export default {
             backgroundColor: '#12c3b9',
           }
         }
+      },
+    },
+    MuiList: {
+      padding: {
+        paddingTop: 0,
+        paddingBottom: 0,
+      }
+    },
+    MuiFilledInput: {
+      input: {
+        padding: '6px 10px'
       }
     }
   },
