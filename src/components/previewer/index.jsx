@@ -4,10 +4,13 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import EditIcon from '@material-ui/icons/Edit'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import GetAppIcon from '@material-ui/icons/GetApp'
+import FileCopyIcon from '@material-ui/icons/FileCopy'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 import {
@@ -46,6 +49,8 @@ const Previewer = ({
   const canvasRef = useRef(null)
 
   const [isConverting, setIsConverting] = useState(false)
+  const [tipOpen, setTipOpen] = useState(false)
+  const [imgurLink, setImgurLink] = useState('')
 
   const convertImg = async () => {
     setIsConverting(true)
@@ -110,61 +115,76 @@ const Previewer = ({
 
   const handleImgDownload = () => {
     canvasRef.current.toBlob( blob => {
-      const url = URL.createObjectURL(blob);
-      dowmloadImg(url, 'image', 'jpg');
+      const url = URL.createObjectURL(blob)
+      dowmloadImg(url, 'image', 'jpg')
     }, `image/jpg`, 1);    
   }
 
-  const handleImgUpload = () => {
-/*
-  const canvas = document.querySelector('.check-section canvas');
-  const imgURL = canvas.getAttribute('data-url');
-  const base64String = await imgHandler.getBase64String(imgURL, width * settings.renderScale, height * settings.renderScale);
+  const uploadImg = async (blob) => {
+    setIsConverting(true)
+    const base64 = await readImage(blob)
 
-  const url = 'https://api.imgur.com/3/image'
-  const headers = new Headers({
-    'Authorization': `Client-ID 41e9570f0218f10`,
-  })
+    const url = 'https://api.imgur.com/3/image'
+    const headers = new Headers({
+      'Authorization': `Client-ID 41e9570f0218f10`,
+    })
 
-  let formData = new FormData();
+    let formData = new FormData();
 
-  formData.append('image', base64String.replace('data:image/png;base64,', ''));
-  formData.append('title', `NiMaPaChi-rune-paper-${new Date().getTime()}`);  
+    formData.append('image', base64.replace('data:image/png;base64,', ''))
+    formData.append('title', `ghibli-oogiri-${new Date().getTime()}`)
 
-  const requestOption = {
-    headers: headers,
-    body: formData,
-    method: 'POST',
-    mode: 'cors',
-  }
-
-  pageStartLoading('上傳圖片中 ...');
-
-  try {
-    const {
-      data,
-      status,
-      success,
-    } = await fetch(url, requestOption).then( rsp => rsp.json() );
-
-    if(success){
-      pageStopLoading();
-      const {
-        link,
-      } = data;
-
-      imgUrl = link;
-      imgUrlElement.value = imgUrl;
-      imgUrlCol.classList.remove('d-none');
-
-    }else{
-      showFetchError();
+    const requestOption = {
+      headers: headers,
+      body: formData,
+      method: 'POST',
+      mode: 'cors',
     }
 
-  } catch(err) {
-    showFetchError();
-    console.log(err);
-  }*/    
+    try {
+      const {
+        data,
+        status,
+        success,
+      } = await fetch(url, requestOption).then( rsp => rsp.json() )
+
+      if(success){
+        setImgurLink(data.link)
+      }else{
+        console.log(status)
+      }
+
+    } catch(err) {
+      console.log(err)
+    }
+    setIsConverting(false)
+  }
+
+  const handleImgUpload = () => {
+    canvasRef.current.toBlob( blob => {
+      uploadImg(blob)
+    }, `image/jpg`, 1)
+  }
+
+  const handleTooltipClose = () => {
+    setTipOpen(false)
+  }
+
+  const handleTooltipOpen = () => {
+    setTipOpen(true)
+  }
+
+  const handleImgurCopy = () => {
+    handleTooltipOpen()
+
+    const el = document.createElement('textarea')
+    el.value = imgurLink
+    document.body.appendChild(el)
+    el.select()
+    document.execCommand('copy')
+    document.body.removeChild(el)
+
+    setTimeout(handleTooltipClose, 500)
   }
 
   useEffect(() => {
@@ -173,44 +193,82 @@ const Previewer = ({
 
   return (
     <div 
-      className={classNames('previewer', { 'previewer--converting': isConverting }) }
+      className={classNames(
+        'previewer', { 
+          'previewer--converting': isConverting,
+          'previewer--has-imgur-link': imgurLink,
+        }) }
     >
-      <div
-        style={{
-          transform: `scale(${scale}, ${scale})`
-        }}
-      >
-        <canvas 
-          ref={canvasRef} 
-          width={imgWidth}
-          height={(svgProps.bottomBannerShow && svgProps.topBannerShow) 
-           ? imgHeight + bannerHeight * 2 
-           : (
-              (svgProps.bottomBannerShow || svgProps.topBannerShow) 
-              ? (imgHeight + bannerHeight) : imgHeight
-          )}
-        />
+      <div className="previewer__wrap">
+        <div
+          style={{
+            transform: `scale(${scale}, ${scale})`
+          }}
+        >
+          <canvas 
+            ref={canvasRef} 
+            width={imgWidth}
+            height={(svgProps.bottomBannerShow && svgProps.topBannerShow) 
+             ? imgHeight + bannerHeight * 2 
+             : (
+                (svgProps.bottomBannerShow || svgProps.topBannerShow) 
+                ? (imgHeight + bannerHeight) : imgHeight
+            )}
+          />
+        </div>
       </div>
       <div className="previewer__actions">
         <div className="previewer__actions-wrap">
-          <Button className="previewer__btn" onClick={onClose}>
-            <div className="previewer__btn-wrap">
-              <EditIcon/>
-              繼續編輯
-            </div>
-          </Button>
-          <Button className="previewer__btn" onClick={handleImgDownload}>
-            <div className="previewer__btn-wrap">
-              <GetAppIcon/>
-              下載圖片
-            </div>
-          </Button>
-          <Button className="previewer__btn" onClick={onClose}>
-            <div className="previewer__btn-wrap">
-              <CloudUploadIcon/>
-              上傳imgur
-            </div>
-          </Button>
+          {
+            imgurLink && (
+              <div className="previewer__actions-row">
+                <TextField
+                  className="previewer__actions-text-field"
+                  value={imgurLink}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                  variant="outlined"
+                />
+                <Tooltip
+                  PopperProps={{
+                    disablePortal: true,
+                  }}
+                  onClose={handleTooltipClose}
+                  open={tipOpen}
+                  disableFocusListener
+                  disableHoverListener
+                  disableTouchListener
+                  title="已複製！"
+                  placement="top"
+                >
+                  <Button onClick={handleImgurCopy}>
+                    <FileCopyIcon />
+                  </Button>
+                </Tooltip>
+              </div>
+            )
+          }
+          <div className="previewer__actions-row">
+            <Button className="previewer__btn" onClick={onClose}>
+              <div className="previewer__btn-wrap">
+                <EditIcon/>
+                繼續編輯
+              </div>
+            </Button>
+            <Button className="previewer__btn" onClick={handleImgDownload}>
+              <div className="previewer__btn-wrap">
+                <GetAppIcon/>
+                下載圖片
+              </div>
+            </Button>
+            <Button className="previewer__btn" onClick={handleImgUpload}>
+              <div className="previewer__btn-wrap">
+                <CloudUploadIcon/>
+                上傳imgur
+              </div>
+            </Button>
+          </div>
         </div>
       </div>
       {

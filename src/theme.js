@@ -74,6 +74,11 @@ export default {
       input: {
         padding: '6px 10px'
       }
+    },
+    MuiOutlinedInput: {
+      input: {
+        padding: '6px 10px'
+      }      
     }
   },
 }

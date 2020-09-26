@@ -20,6 +20,16 @@
       top 0
       left 0
       z-index 5
+  
+  &--has-imgur-link
+    padding 0 0 102px
+  
+  &__wrap
+    $display-flex(row, center, start)
+    max-height 100%
+    width 100%
+    overflow-y auto  
+    overflow-x hidden
 
   &__loader
     position absolute
@@ -38,9 +48,18 @@
   &__actions-wrap
     width 100%
     max-width 320px
-    padding 4px
+    padding 0 4px
+    flex-wrap wrap
+    $display-flex()
+    
+  &__actions-row 
+    width 100%
+    padding 4px 0
     $display-flex()
   
+  &__actions-text-field
+    flex 1 0 0
+
   &__btn
     flex 1 0 0
   
