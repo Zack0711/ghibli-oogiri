@@ -1,12 +1,48 @@
 @import '../../mixin'
 
 .previewer
-  width 144px
-  height 144px
+  width 100%
+  height 100%
   background #847562
+  position relative
+  padding 0 0 58px
   $display-flex(column)
+
+  &--converting
+    &:after
+      content ''
+      display block
+      width 100%
+      height 100%
+      background white
+      opacity 0.5
+      position absolute
+      top 0
+      left 0
+      z-index 5
+
+  &__loader
+    position absolute
+    z-index 10
+    top calc( 50% - 20px )
+    left calc( 50% - 20px )
   
-  &__block--wrap
-    flex-wrap wrap
+  &__actions
+    position absolute
+    width 100%;
+    left 0
+    bottom 0
+    background #f2f0d9
     $display-flex()
-      
+  
+  &__actions-wrap
+    width 100%
+    max-width 320px
+    padding 4px
+    $display-flex()
+  
+  &__btn
+    flex 1 0 0
+  
+  &__btn-wrap
+    $display-flex(column)

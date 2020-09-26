@@ -13,13 +13,15 @@ const Text = ({
   rotate, 
   text,
   size,
+  fontFamily,
   strokeWidth,
   stroke,
   textAnchor,
   selectHandler,
   handleBBoxChange,
   isSelected, 
-  index
+  index,
+  scale
 }) => {
   const textRef = useRef(null)
   const [textBBox, setTextBBox] = useState({x:0, y:0, width:0, height:0})
@@ -29,12 +31,15 @@ const Text = ({
       setTextBBox(textRef.current.getBBox())
       handleBBoxChange(textRef.current.getBBox())
     }
-  }, [text, size, textAnchor])
+  }, [text, size, textAnchor, scale])
 
   return (
     <g
       transform={`translate(${x} ${y}) rotate(${rotate})`}
-      onClick={() => selectHandler(index)}
+      onClick={(e) => {
+        e.stopPropagation()
+        selectHandler(index)
+      }}
     >
       <g
         transform={`translate(${-textBBox.width/2 - (textBBox.x)} ${-textBBox.height/2})`}
@@ -47,7 +52,8 @@ const Text = ({
         />
         <g
           ref={textRef}
-          fontSize={`${size}px`}
+          fontSize={`${size*scale}px`}
+          fontFamily={fontFamily}
         >
           {
             text.split(/[\n\r|\n|\r\n]/).map( (d, i) => (
@@ -59,7 +65,7 @@ const Text = ({
                 fill={color}
                 key={i}
                 x={0}
-                y={ i * size }
+                y={ i * size * scale}
               >
                 { d }
               </text>

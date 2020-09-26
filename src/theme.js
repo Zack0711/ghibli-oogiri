@@ -46,6 +46,7 @@ export default {
       },
       contained: {
         boxShadow: 'none',
+        backgroundColor: '#fdc0c7',
       },
     },
     MuiIconButton: {

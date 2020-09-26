@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react'
 const useScreen = () => {
   const isClient = typeof window === 'object'
   const getSize = () => ({
-    width: isClient ? window.outerWidth : undefined,
-    height: isClient ? window.outerHeight : undefined,
+    width: isClient ? window.innerWidth : undefined,
+    height: isClient ? window.innerHeight : undefined,
   })
 
   const [screen, setScreen] = useState('xl')

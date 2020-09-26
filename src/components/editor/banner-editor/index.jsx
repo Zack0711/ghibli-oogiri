@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { SketchPicker } from 'react-color'
+import { SketchPicker, CompactPicker } from 'react-color'
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
@@ -30,45 +30,41 @@ import TextInput from '../text-input'
 const FONT_SIZES = [18, 20, 22, 24, 26, 28, 32, 36, 40, 44, 48, 56, 64, 72, 80, 88, 96]
 const TEXT_STROKE_WIDTH = [0, 0.5, 1, 1.5, 2]
 
-const TextEditor = ({
-  textProps,
-  textPropsChange,
-  unselectText,
-  deleteText,
+const BannerEditor = ({
+  bannerProps,
+  isTextSelected,
+  bannerPropsChange,
+  unselectBanner,
 }) => {
 
   const [textEditModalOpen, setTextEditModalOpen] = useState(false)
 
   const [fontColorEl, setFontColorEl] = useState(null)
-  const [strokeColorEl, setStrokeColorEl] = useState(null)
   const [bgColorEl, setBGColorEl] = useState(null)
 
-  const handleTextPropsChange = (key, value) => {
-    textPropsChange(key, value)
+  const handleBannerPropsChange = (key, value) => {
+    bannerPropsChange(key, value)
   }
 
   const setColor = key => color => {
     const { r, g, b, a } = color.rgb
-    handleTextPropsChange(key, `rgba(${r}, ${g}, ${b}, ${a})`)
+    handleBannerPropsChange(key, `rgba(${r}, ${g}, ${b}, ${a})`)
   }
 
   useEffect(() => {
-    if(!textProps.text) {
-      setTextEditModalOpen(true)
-    }
-  }, [textProps])
+  }, [])
 
   return (
     <div 
-      className="text-editor"
+      className="banner-editor"
       onClick={(e) => {
         e.stopPropagation()
       }}
     >
-      <div className="text-editor__wrap">
-        <div className="text-editor__row">
+      <div className="banner-editor__wrap">
+        <div className="banner-editor__row">
           <Button onClick={ e => setFontColorEl(e.currentTarget)}>
-            <FormatColorTextIcon htmlColor={textProps.color} />
+            <FormatColorTextIcon htmlColor={bannerProps.color} />
           </Button>
           <Menu
             id="font-color-menu"
@@ -77,13 +73,13 @@ const TextEditor = ({
             open={Boolean(fontColorEl)}
             onClose={() => setFontColorEl(null)}
           >
-            <SketchPicker
-              color={textProps.color}
+            <CompactPicker
+              color={bannerProps.color}
               onChangeComplete={setColor('color')}
             />
           </Menu>
           <Button onClick={ e => setBGColorEl(e.currentTarget)}>
-            <FormatColorFillIcon htmlColor={textProps.background !== 'transparent' ? textProps.background : '#000'} />
+            <FormatColorFillIcon htmlColor={bannerProps.background !== 'transparent' ? bannerProps.background : '#000'} />
           </Button>
           <Menu
             id="stroke-color-menu"
@@ -92,17 +88,16 @@ const TextEditor = ({
             open={Boolean(bgColorEl)}
             onClose={() => setBGColorEl(null)}
           >
-            <SketchPicker
-              color={textProps.background !== 'transparent' ? textProps.background : '#000'}
-              onChangeComplete={setColor('background')}
-            />
+            <CompactPicker
+              color={bannerProps.background !== 'transparent' ? bannerProps.background : '#000'}
+              onChangeComplete={setColor('background')}banner         />
           </Menu>
-          <div className="text-editor__selector-btn">
+          <div className="banner-editor__selector-btn">
             Size: 
             <Select
               labelId="size-select"
-              value={textProps.size}
-              onChange={(e) => handleTextPropsChange('size', e.target.value)}
+              value={bannerProps.size}
+              onChange={(e) => handleBannerPropsChange('size', e.target.value)}
               variant="filled"
             >
               {
@@ -115,7 +110,7 @@ const TextEditor = ({
           <Button 
             onClick={ () => setTextEditModalOpen(true)} 
             variant="outlined"
-            className="text-editor__flex-btn"
+            className="banner-editor__flex-btn"
           >
             <EditIcon />
             Edit Text
@@ -125,53 +120,34 @@ const TextEditor = ({
             onClose={() => setTextEditModalOpen(false)}
           >
             <TextInput
-              text={textProps.text}
-              textUpdate={ text => handleTextPropsChange('text', text)}
+              text={bannerProps.text}
+              textUpdate={ text => handleBannerPropsChange('text', text)}
               onClose={() => setTextEditModalOpen(false)}
-              deleteText={deleteText}
             />
           </Modal>
         </div>
-        <div className="text-editor__row">
+        <div className="banner-editor__row">
           <Button 
-            variant={ textProps.textAnchor === 'start' ? 'contained' : 'text'}
-            onClick={ () => handleTextPropsChange('textAnchor', 'start')}
+            variant={ bannerProps.textAnchor === 'start' ? 'contained' : 'text'}
+            onClick={ () => handleBannerPropsChange('textAnchor', 'start')}
           >
             <FormatAlignLeftIcon/>
           </Button>
           <Button 
-            variant={ textProps.textAnchor === 'middle' ? 'contained' : 'text'}
-            onClick={ () => handleTextPropsChange('textAnchor', 'middle')}
+            variant={ bannerProps.textAnchor === 'middle' ? 'contained' : 'text'}
+            onClick={ () => handleBannerPropsChange('textAnchor', 'middle')}
           >
             <FormatAlignCenterIcon/>
           </Button>
           <Button 
-            variant={ textProps.textAnchor === 'end' ? 'contained' : 'text'}
-            onClick={ () => handleTextPropsChange('textAnchor', 'end')}
+            variant={ bannerProps.textAnchor === 'end' ? 'contained' : 'text'}
+            onClick={ () => handleBannerPropsChange('textAnchor', 'end')}
           >
             <FormatAlignRightIcon/>
           </Button>
-          <div className="text-editor__rotate-slider">
-            <div className="text-editor__rotate-slider-wrap">
-              <Slider 
-                value={textProps.rotate} 
-                onChange={(e, val) => handleTextPropsChange('rotate', val)}
-                min={0}
-                max={360}
-                aria-labelledby="continuous-slider"
-              />
-            </div>
-            <RotateRightIcon />
-          </div>
-        </div>
-        <div className="text-editor__row">
-          <Button onClick={unselectText} className="text-editor__flex-btn" variant="contained">
+          <Button onClick={unselectBanner} className="banner-editor__flex-btn" variant="contained">
             <CheckIcon/>
             完成
-          </Button>
-          <Button onClick={deleteText} className="text-editor__flex-btn">
-            <DeleteIcon/>
-            刪除
           </Button>
         </div>
       </div>
@@ -179,6 +155,6 @@ const TextEditor = ({
   )
 }
 
-TextEditor.propTypes = {}
+BannerEditor.propTypes = {}
 
-export default TextEditor
+export default BannerEditor

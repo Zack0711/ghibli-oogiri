@@ -52,13 +52,21 @@ select, option, button {
 }
 
 body {
-  background: #f2f0d9;
+  background: #ccc;
   color: #665042;
   font-family: "Noto Sans", Roboto, Helvetica, Arial, sans-serif;
 }
 
 * {
   box-sizing: border-box;
+}
+
+body,
+#root{
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
 }
 
 @font-face {

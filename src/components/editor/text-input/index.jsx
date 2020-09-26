@@ -23,7 +23,7 @@ const TextInput = ({text, onClose, textUpdate, deleteText}) => {
   }
 
   const handleCancel = () => {
-    if (!text && text) {
+    if (!text && deleteText) {
       deleteText()
     } else {
       onClose()

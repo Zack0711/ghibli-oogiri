@@ -1,5 +1,5 @@
-import ColorThief from 'colorthief'
-import RgbQuant from 'rgbquant'
+//import ColorThief from 'colorthief'
+//import RgbQuant from 'rgbquant'
 
 import {
   deltaE,
@@ -18,17 +18,19 @@ export const readImage = file => new Promise((resolve, reject) => {
   reader.readAsDataURL(file)
 })
 
-const colorThief = new ColorThief()
-const IMAGE_WIDTH = 32
-const IMAGE_HEIGHT = 32
-const PALETTE_COUNT = 15
-
 export const loadImage = file => new Promise(async (resolve, reject) => {
   const base64String = await readImage(file)
   const img = new Image()
   img.onload = () => resolve(img)
   img.src = base64String
 })
+
+/*
+
+const colorThief = new ColorThief()
+const IMAGE_WIDTH = 32
+const IMAGE_HEIGHT = 32
+const PALETTE_COUNT = 15
 
 export const loadImageData = file => new Promise(async (resolve, reject) => {
   const base64String = await readImage(file)
@@ -269,3 +271,4 @@ export const imageQuantize = (img, row, col, activePalette = DEFAULT_PALETTE) =>
   })
 
 }
+*/

@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 
 import './index.styl'
 
-const Selector = ({selectedLabel, itemRender, options, onChange, className}) => {
+const Selector = ({selectedLabel, itemRender, options, onChange, className, classes = {}}) => {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const handleBtnClick = (e) => {
@@ -26,7 +26,12 @@ const Selector = ({selectedLabel, itemRender, options, onChange, className}) => 
 
   return (
     <div className={classNames('selector', className)}>
-      <Button onClick={handleBtnClick}>
+      <Button 
+        onClick={handleBtnClick}
+        classes={{
+          root: classes.btn
+        }}
+      >
         { selectedLabel }
       </Button>
       <Menu
