@@ -12,6 +12,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import GetAppIcon from '@material-ui/icons/GetApp'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import LoopIcon from '@material-ui/icons/Loop'
 
 import {
   creatSVGNode,
@@ -32,7 +33,24 @@ const FONT_DATA = {
     name: 'font-jf-openhuninn',
     url: 'font/jf-openhuninn-11.woff',
   },
+  'font-soukou-mincho': {
+    name: 'font-soukou-mincho',
+    url: 'font/soukouMincho.woff',    
+  },
+  'notoSansTC-medium': {
+    name: 'notoSansTC-black',
+    url: 'font/notoSansTC-medium.woff',        
+  },
+  'notoSansTC-bold': {
+    name: 'notoSansTC-black',
+    url: 'font/notoSansTC-bold.woff',        
+  },
+  'notoSansTC-black': {
+    name: 'notoSansTC-black',
+    url: 'font/notoSansTC-black.woff',        
+  }
 }
+//  { value: `notoSansTC-black`, file: 'notoSansTC-black', label: 'Google字體'},
 
 const Previewer = ({
   svgNode,
@@ -55,14 +73,18 @@ const Previewer = ({
   const convertImg = async () => {
     setIsConverting(true)
 
-    const imgBlob = await fetch(imgUrl).then(rsp => rsp.blob())
+    const url = `./gallery/${imgUrl}`
+
+    const imgBlob = await fetch(url).then(rsp => rsp.blob())
     const base64 = await readImage(imgBlob)
     const font = fontFamily.file 
       ? await embedFont([FONT_DATA[fontFamily.file]])
       : []
 
     const svgEl = svgNode.cloneNode(true)
-    const imgNode = svgEl.getElementById('svg-img')
+    //const imgNode = svgEl.getElementById('svg-img')
+    //const imgTags = svgEl.getElementsByTagNameNS(svgns, 'image')
+    //const imgNode = imgTags[0]
     const defNode = svgEl.getElementById('svg-def')
     const svgns = 'http://www.w3.org/2000/svg'
 
@@ -71,7 +93,7 @@ const Previewer = ({
         const styleEl = document.createElement('style')
         styleEl.setAttribute('type', 'text/css')
         styleEl.innerHTML = d.fontStyle
-        defNode.appendChild(styleEl)
+        svgEl.getElementsByTagNameNS(svgns, 'defs')[0].appendChild(styleEl)
       })
     }
 
@@ -82,7 +104,10 @@ const Previewer = ({
         ? (imgHeight + bannerHeight) : imgHeight
       )
 
-    imgNode.setAttribute('href', base64)
+    //console.log(svgEl, svgEl.getElementsByTagNameNS(svgns, 'defs')[0])
+    //imgNode.setAttribute('href', base64)
+    svgEl.getElementsByTagNameNS(svgns, 'image')[0].setAttribute('xlink:href', base64)
+    svgEl.getElementsByTagNameNS(svgns, 'image')[0].setAttribute('href', base64)
 
     const svgUrl = getSVGUrl(svgEl)
     const ctx = canvasRef.current.getContext('2d')
@@ -250,16 +275,22 @@ const Previewer = ({
             )
           }
           <div className="previewer__actions-row">
+            <Button className="previewer__btn" onClick={convertImg}>
+              <div className="previewer__btn-wrap">
+                <LoopIcon/>
+                重新轉換
+              </div>
+            </Button>            
             <Button className="previewer__btn" onClick={onClose}>
               <div className="previewer__btn-wrap">
                 <EditIcon/>
-                繼續編輯
+                編輯
               </div>
             </Button>
             <Button className="previewer__btn" onClick={handleImgDownload}>
               <div className="previewer__btn-wrap">
                 <GetAppIcon/>
-                下載圖片
+                下載
               </div>
             </Button>
             <Button className="previewer__btn" onClick={handleImgUpload}>

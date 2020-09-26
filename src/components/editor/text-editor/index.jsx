@@ -18,7 +18,7 @@ import FormatColorFillIcon from '@material-ui/icons/FormatColorFill'
 import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft'
 import FormatAlignCenterIcon from '@material-ui/icons/FormatAlignCenter'
 import FormatAlignRightIcon from '@material-ui/icons/FormatAlignRight'
-import RotateRightIcon from '@material-ui/icons/RotateRight'
+import ReplayIcon from '@material-ui/icons/Replay';
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 import CheckIcon from '@material-ui/icons/Check'
@@ -161,7 +161,7 @@ const TextEditor = ({
                 aria-labelledby="continuous-slider"
               />
             </div>
-            <RotateRightIcon />
+            <ReplayIcon />
           </div>
         </div>
         <div className="text-editor__row">

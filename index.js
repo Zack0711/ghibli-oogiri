@@ -17,7 +17,6 @@ import "regenerator-runtime/runtime"
 
 import './reset.css'
 
-import Gallery from './src/components/gallery'
 import Editor from './src/components/editor'
 
 import theme from './src/theme'

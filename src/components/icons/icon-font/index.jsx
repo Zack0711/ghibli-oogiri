@@ -36,6 +36,10 @@ const FONT_STYLE = {
   'text-tool': 'icon-text-tool',
   'text-edit': 'icon-edit-text',
   'convert-img': 'icon-convert-img',
+  'layout-1': 'icon-layout-1',
+  'layout-2': 'icon-layout-2',
+  'layout-3': 'icon-layout-3',
+  'layout-4': 'icon-layout-4',
 }
 
 const FONT_SIZE = {

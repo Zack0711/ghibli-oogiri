@@ -9,15 +9,15 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/core/styles'
 import TextFieldsIcon from '@material-ui/icons/TextFields'
 import LaunchIcon from '@material-ui/icons/Launch'
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import Modal from '@material-ui/core/Modal'
-
-import useScreen from '../../hooks/use-screen'
 
 import './index.styl'
 
 import Selector from '../selector'
 import IconLabel from '../icon-label'
 import Previewer from '../previewer'
+import Gallery from '../gallery'
 
 import Text from './text'
 import TextEditor from './text-editor'
@@ -68,7 +68,7 @@ const DEFAULT_BANNER_PROPS = {
   background: '#000',
   size: 40,
   textAnchor: 'start',
-  text: 'Banner Text 測試文字！',
+  text: '',
   bBox: {
     x:0, 
     y:0, 
@@ -80,10 +80,10 @@ const DEFAULT_BANNER_PROPS = {
 }
 
 const LAYOUT_OPTIONS = [
-  { label: 'mode-1', key: 'mode-1', val: 1, icon: 'mirror-no' },
-  { label: 'mode-2', key: 'mode-2', val: 2, icon: 'mirror-horizontal' },
-  { label: 'mode-3', key: 'mode-3', val: 3, icon: 'mirror-vertical' },
-  { label: 'mode-4', key: 'mode-4', val: 4, icon: 'mirror-vertical' },
+  { label: '版型-1', key: 'mode-1', val: 1, icon: 'layout-1' },
+  { label: '版型-2', key: 'mode-2', val: 2, icon: 'layout-2' },
+  { label: '版型-3', key: 'mode-3', val: 3, icon: 'layout-3' },
+  { label: '版型-4', key: 'mode-4', val: 4, icon: 'layout-4' },
 ]
 
 const DEFAULT_SVG_PROPS = {
@@ -103,11 +103,16 @@ const SCALE = {
 }
 
 const DEFAULT_FONT = `"Noto Sans", Roboto, Helvetica, Arial, sans-serif`
-
 const FONT_OPTIONS = [
   { value: DEFAULT_FONT, file: null, label: '系統字體'}, 
+  { value: `notoSansTC-medium`, file: 'notoSansTC-medium', label: '思源黑體'},
+  { value: `notoSansTC-bold`, file: 'notoSansTC-bold', label: '思源黑體-粗'},
+  { value: `notoSansTC-black`, file: 'notoSansTC-black', label: '思源黑體-黑'},
   { value: `font-jf-openhuninn`, file:'font-jf-openhuninn', label: '粉圓體'},
+  { value: `font-soukou-mincho`, file:'font-soukou-mincho', label: '裝甲明朝'},
 ]
+
+const BASE_URL = `http://www.ghibli.jp/gallery/`
 
 const useStyles = makeStyles({
   btn: {
@@ -124,15 +129,12 @@ const useStyles = makeStyles({
 const Editor = props => {
   const classes = useStyles()
   const isClient = typeof window === 'object'
-  const dispatch = useDispatch()
 
   const svgRef = useRef(null)
   const svgImgRef = useRef(null)
   const scaleRef = useRef(1)
-  //const screen = useScreen()
 
-  //const [imgUrl, setImgUrl] = useState('http://www.ghibli.jp/gallery/marnie013.jpg')
-  const [imgUrl, setImgUrl] = useState('./gallery/marnie013.jpg')
+  const [imgUrl, setImgUrl] = useState('')
 
   const [pos, setPos] = useState({x: 0, y: 0, dx:0, dy: 0})
   const [isMouseDown, setIsMouseDown] = useState(false)
@@ -151,6 +153,7 @@ const Editor = props => {
   const [fontFamily, setFontFamily] = useState(FONT_OPTIONS[0])
 
   const [previewerModalOpen, setPreviewerModalOpen] = useState(false)
+  const [galleryModalOpen, setGalleryModalOpen] = useState(true)
 
   const textPropsChange = (key, value) => {
     if (selectedText >= 0) setSelectedTextPros({[key]: value})    
@@ -296,6 +299,11 @@ const Editor = props => {
     setSvgProps(newSvgProps)
   }
 
+  const selectImage = img => {
+    setImgUrl(`${img}.jpg`)
+    setGalleryModalOpen(false)
+  }
+
   const handleResize = () => {
     const width = isClient ? window.innerWidth : undefined
     const newScale = width / IMG_WIDTH
@@ -382,12 +390,16 @@ const Editor = props => {
               <g
                 transform={`scale(${scale} ${scale})`}
               >
-                <image 
-                  id="svg-img"
-                  href={imgUrl}
-                  width={IMG_WIDTH}
-                  height={IMG_HEIGHT}
-                />
+                {
+                  imgUrl && (
+                    <image 
+                      id="svg-img"
+                      href={`${BASE_URL}${imgUrl}`}
+                      width={IMG_WIDTH}
+                      height={IMG_HEIGHT}
+                    />
+                  )
+                }
               </g>
               {
                 textList.map( (d, i) => <Text 
@@ -444,6 +456,14 @@ const Editor = props => {
           }}
         >
           <div className="editor__row">
+            <Button 
+              onClick={() => setGalleryModalOpen(true)}
+              classes={{
+                root: classes.btn
+              }}
+            >
+              <PhotoLibraryIcon />
+            </Button>            
             <Selector 
               className="painter__mirror-selector"
               options={LAYOUT_OPTIONS}
@@ -511,6 +531,14 @@ const Editor = props => {
           </div>
         </div>
       </div>
+      <Modal
+        open={galleryModalOpen}
+        onClose={() => setGalleryModalOpen(false)}
+      >
+        <Gallery
+          selectImage={selectImage}
+        />
+      </Modal>
     </div>
   )
 }

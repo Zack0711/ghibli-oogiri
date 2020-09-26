@@ -63,33 +63,29 @@ body {
 
 body,
 #root{
-  position: fixed;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-}
-
-@font-face {
-  font-family: 'font-hdzb';
-  src: url('./font/zhuanti.woff?59488976') format('woff');
-}
-
-@font-face {
-  font-family: 'font-kouzansousho';
-  src: url('./font/KouzanBrushFontSousyo.woff?59488976') format('woff');
-}
-
-@font-face {
-  font-family: 'font-aoyagireisho';
-  src: url('./font/aoyagireisyosimo_ttf_2_01.woff?59488976') format('woff');
-}
-
-@font-face {
-  font-family: 'font-seto';
-  src: url('./font/sp-setofont.woff?59488976') format('woff');
 }
 
 @font-face {
   font-family: 'font-jf-openhuninn';
   src: url('./font/jf-openhuninn-11.woff?59488976') format('woff');
+}
+
+@font-face {
+  font-family: 'font-soukou-mincho';
+  src: url('./font/soukouMincho.woff?59488976') format('woff');
+}
+
+@font-face {
+  font-family: 'notoSansTC-medium';
+  src: url('./font/notoSansTC-medium.woff?59488976') format('woff');
+}
+
+@font-face {
+  font-family: 'notoSansTC-bold';
+  src: url('./font/notoSansTC-bold.woff?59488976') format('woff');
+}
+
+@font-face {
+  font-family: 'notoSansTC-black';
+  src: url('./font/notoSansTC-black.woff?59488976') format('woff');
 }
