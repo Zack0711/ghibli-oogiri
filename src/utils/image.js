@@ -1,12 +1,3 @@
-import {
-  deltaE,
-  rgb2lab,
-  hex2rgb,
-  colorsPalette,
-} from './color'
-
-import { genArray } from './tools'
-
 export const readImage = file => new Promise((resolve, reject) => {
   const reader = new FileReader()
   reader.onload = (e) => {

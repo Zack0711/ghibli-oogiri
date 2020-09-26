@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
 import { ThemeProvider } from '@material-ui/styles'
 
 import * as Sentry from '@sentry/react';
@@ -21,9 +20,6 @@ import './reset.css'
 import Gallery from './src/components/gallery'
 import Editor from './src/components/editor'
 
-//Editor
-
-import store from './src/store'
 import theme from './src/theme'
 
 const history = createHistory(window)
@@ -37,11 +33,9 @@ Sentry.init({
 });
 
 const App = () => (
-  <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <Editor />
-    </ThemeProvider>
-  </Provider>
+  <ThemeProvider theme={theme}>
+    <Editor />
+  </ThemeProvider>
 )
 
 ReactDOM.render(<App />, document.getElementById('root'))
