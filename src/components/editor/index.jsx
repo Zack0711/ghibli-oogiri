@@ -534,6 +534,7 @@ const Editor = props => {
       <Modal
         open={galleryModalOpen}
         onClose={() => setGalleryModalOpen(false)}
+        keepMounted={true}
       >
         <Gallery
           selectImage={selectImage}
