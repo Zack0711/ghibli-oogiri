@@ -135,6 +135,7 @@ const Editor = props => {
   const scaleRef = useRef(1)
 
   const [imgUrl, setImgUrl] = useState('')
+  const [previousTextProps, setPreviousTextProps] = useState({})
 
   const [pos, setPos] = useState({x: 0, y: 0, dx:0, dy: 0})
   const [isMouseDown, setIsMouseDown] = useState(false)
@@ -229,6 +230,13 @@ const Editor = props => {
   }
 
   const unselectText = () => {
+    const {
+      color,
+      background,
+      size,
+    } = textList[selectedText]
+
+    setPreviousTextProps({ color, background, size })
     setSelectedText(-1)
   }
 
@@ -256,6 +264,7 @@ const Editor = props => {
     const newList = [...textList]
     newList.push({
       ...DEFAULT_TEXT_PROPS,
+      ...previousTextProps,
       text: '',
       x: IMG_WIDTH * scale / 2,
       y: IMG_HEIGHT * scale / 2,
