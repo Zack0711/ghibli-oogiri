@@ -105,9 +105,8 @@ const SCALE = {
 const DEFAULT_FONT = `"Noto Sans", Roboto, Helvetica, Arial, sans-serif`
 const FONT_OPTIONS = [
   { value: DEFAULT_FONT, file: null, label: '系統字體'}, 
-  { value: `notoSansTC-medium`, file: 'notoSansTC-medium', label: '思源黑體'},
-  { value: `notoSansTC-bold`, file: 'notoSansTC-bold', label: '思源黑體-粗'},
-  { value: `notoSansTC-black`, file: 'notoSansTC-black', label: '思源黑體-黑'},
+  { value: `genYoGothicTW-m`, file: 'genYoGothicTW-m', label: '原樣黑體'},
+  { value: `genYoGothicTW-b`, file: 'genYoGothicTW-b', label: '原樣黑體-粗'},
   { value: `font-jf-openhuninn`, file:'font-jf-openhuninn', label: '粉圓體'},
   { value: `font-soukou-mincho`, file:'font-soukou-mincho', label: '裝甲明朝'},
 ]
@@ -230,13 +229,15 @@ const Editor = props => {
   }
 
   const unselectText = () => {
-    const {
-      color,
-      background,
-      size,
-    } = textList[selectedText]
+    if (selectedText > -1) {
+      const {
+        color,
+        background,
+        size,
+      } = textList[selectedText]
 
-    setPreviousTextProps({ color, background, size })
+      setPreviousTextProps({ color, background, size })      
+    }
     setSelectedText(-1)
   }
 

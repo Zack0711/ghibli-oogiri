@@ -37,21 +37,16 @@ const FONT_DATA = {
     name: 'font-soukou-mincho',
     url: 'font/soukouMincho.woff',    
   },
-  'notoSansTC-medium': {
-    name: 'notoSansTC-black',
-    url: 'font/notoSansTC-medium.woff',        
+  'genYoGothicTW-m': {
+    name: 'genYoGothicTW-m',
+    url: 'font/genYoGothicTW-m.woff',
   },
-  'notoSansTC-bold': {
-    name: 'notoSansTC-black',
-    url: 'font/notoSansTC-bold.woff',        
+  'genYoGothicTW-b': {
+    name: 'genYoGothicTW-b',
+    url: 'font/genYoGothicTW-b.woff',
   },
-  'notoSansTC-black': {
-    name: 'notoSansTC-black',
-    url: 'font/notoSansTC-black.woff',        
-  }
 }
-//  { value: `notoSansTC-black`, file: 'notoSansTC-black', label: 'Google字體'},
-
+//genYoGothicTW-m
 const Previewer = ({
   svgNode,
   imgUrl,

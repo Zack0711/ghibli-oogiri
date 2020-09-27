@@ -41,6 +41,7 @@ const TextInput = ({text, onClose, textUpdate, deleteText}) => {
         <TextField
           multiline
           rows={4}
+          className='text-input__text-field'
           variant="outlined"
           value={inputText}
           onChange={ e => setInputText(e.target.value)}

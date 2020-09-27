@@ -65,7 +65,7 @@ const Text = ({
                 fill={color}
                 key={i}
                 x={0}
-                y={ i * size * scale}
+                y={ i * size * scale * 1.2}
               >
                 { d }
               </text>

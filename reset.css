@@ -76,16 +76,11 @@ body,
 }
 
 @font-face {
-  font-family: 'notoSansTC-medium';
-  src: url('./font/notoSansTC-medium.woff?59488976') format('woff');
+  font-family: 'genYoGothicTW-m';
+  src: url('./font/genYoGothicTW-m.woff?59488976') format('woff');
 }
 
 @font-face {
-  font-family: 'notoSansTC-bold';
-  src: url('./font/notoSansTC-bold.woff?59488976') format('woff');
-}
-
-@font-face {
-  font-family: 'notoSansTC-black';
-  src: url('./font/notoSansTC-black.woff?59488976') format('woff');
+  font-family: 'genYoGothicTW-b';
+  src: url('./font/genYoGothicTW-b.woff?59488976') format('woff');
 }

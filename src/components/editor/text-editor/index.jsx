@@ -27,7 +27,7 @@ import './index.styl'
 
 import TextInput from '../text-input'
 
-const FONT_SIZES = [16, 18, 20, 22, 24, 26, 28, 32, 36, 40, 44, 48, 56, 64, 72, 80, 88, 96]
+const FONT_SIZES = [14, 16, 18, 20, 22, 24, 26, 28, 32, 36, 40, 44, 48, 56, 64, 72, 80, 88, 96, 114]
 const TEXT_STROKE_WIDTH = [0, 0.5, 1, 1.5, 2]
 
 const TextEditor = ({
