@@ -41,3 +41,6 @@
 #### 現在馬上著手就來做一張吉卜力的梗圖吧！
 
 ![Introfuction Image](/intro/intro-6.jpg "Introfuction Image")
+
+有任何問題或建議歡迎在專頁上聯絡，相關更新消息也會發表在上面
+[臉書專頁](https://www.facebook.com/sdpMemeStudio/ "Facebook Page")
