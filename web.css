@@ -76,18 +76,13 @@ body,
 }
 
 @font-face {
-  font-family: 'notoSansTC-medium';
-  src: url(public/fonts/notoSansTC-medium.woff) format('woff');
+  font-family: 'genYoGothicTW-m';
+  src: url(public/fonts/genYoGothicTW-m.woff) format('woff');
 }
 
 @font-face {
-  font-family: 'notoSansTC-bold';
-  src: url(public/fonts/notoSansTC-bold.woff) format('woff');
-}
-
-@font-face {
-  font-family: 'notoSansTC-black';
-  src: url(public/fonts/notoSansTC-black.woff) format('woff');
+  font-family: 'genYoGothicTW-b';
+  src: url(public/fonts/genYoGothicTW-b.woff) format('woff');
 }
 
 ::-webkit-scrollbar {
@@ -597,6 +592,7 @@ body,
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 320px;
   padding: 8px;
   background: #fff;
 }
@@ -615,6 +611,9 @@ body,
   padding: 8px 0;
   font-size: 10px;
   color: #f00;
+}
+.text-input__text-field {
+  width: 100%;
 }
 
 ::-webkit-scrollbar {
