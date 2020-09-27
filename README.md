@@ -1,5 +1,6 @@
 # 吉卜力-大喜利號
-[駕駛艙入口](https://zack0711.github.io/ghibli-oogiri/ "Entry Link")
+### 迷因梗圖線上編輯器
+[編輯器入口](https://zack0711.github.io/ghibli-oogiri/ "Entry Link")
 
 ***
 
