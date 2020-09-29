@@ -218,7 +218,7 @@ const Editor = props => {
     setIsMouseDown(false)
   }
 
-  const handleTextSelect = index => {
+  const handleTextSelect = (index, textEl) => {
     setSelectedText(index)
     unselectBanner()
   }
@@ -314,12 +314,6 @@ const Editor = props => {
     setGalleryModalOpen(false)
   }
 
-  const handleResize = () => {
-    const width = isClient ? window.innerWidth : undefined
-    const newScale = width / IMG_WIDTH
-    setScale(newScale <= 1 ? newScale : 1)
-  }
-
   useEffect(() => {
     const newList = [...textList]
     newList.forEach(d => {
@@ -341,6 +335,11 @@ const Editor = props => {
 
   useEffect(() => {
     if (!isClient) return false
+    const handleResize = () => {
+      const width = isClient ? window.innerWidth : undefined
+      const newScale = width / IMG_WIDTH
+      setScale(newScale <= 1 ? newScale : 1)
+    }
 
     handleResize()
     window.addEventListener('resize', handleResize)

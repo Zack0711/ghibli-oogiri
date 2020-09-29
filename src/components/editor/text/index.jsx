@@ -24,6 +24,7 @@ const Text = ({
   scale
 }) => {
   const textRef = useRef(null)
+  const textRefEl = useRef(null)
   const [textBBox, setTextBBox] = useState({x:0, y:0, width:0, height:0})
 
   useEffect(() => {
@@ -35,10 +36,11 @@ const Text = ({
 
   return (
     <g
+      ref={textRefEl}
       transform={`translate(${x} ${y}) rotate(${rotate})`}
       onClick={(e) => {
         e.stopPropagation()
-        selectHandler(index)
+        selectHandler(index, textRefEl.current)
       }}
     >
       <g
