@@ -124,12 +124,14 @@ const TextEditor = ({
             open={textEditModalOpen}
             onClose={() => setTextEditModalOpen(false)}
           >
-            <TextInput
-              text={textProps.text}
-              textUpdate={ text => handleTextPropsChange('text', text)}
-              onClose={() => setTextEditModalOpen(false)}
-              deleteText={deleteText}
-            />
+            <>
+              <TextInput
+                text={textProps.text}
+                textUpdate={ text => handleTextPropsChange('text', text)}
+                onClose={() => setTextEditModalOpen(false)}
+                deleteText={deleteText}
+              />
+            </>
           </Modal>
         </div>
         <div className="text-editor__row">

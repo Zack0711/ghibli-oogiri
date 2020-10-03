@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, forwardRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close'
 
 import './index.styl'
 
-const TextInput = ({text, onClose, textUpdate, deleteText}) => {
+const TextInput = ({text, onClose, textUpdate, deleteText, forwardedRef}) => {
   const [inputText, setInputText] = useState('')
 
   const handleConfirm = () => {
@@ -35,7 +35,7 @@ const TextInput = ({text, onClose, textUpdate, deleteText}) => {
   }, [])
 
   return (
-    <div className='text-input'>
+    <div className='text-input' ref={forwardedRef}>
       <div className='text-input__content'>
         <h5 className='text-input__title'>輸入文字</h5>
         <TextField
@@ -74,4 +74,5 @@ const TextInput = ({text, onClose, textUpdate, deleteText}) => {
 
 TextInput.propTypes = {}
 
-export default TextInput
+//export default TextInput
+export default forwardRef((props, ref) => <TextInput {...props} forwardedRef={ref} />)

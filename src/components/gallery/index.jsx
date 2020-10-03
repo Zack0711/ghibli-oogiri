@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, forwardRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
@@ -86,7 +86,7 @@ const AccordionDetails = withStyles((theme) => ({
   },
 }))(MuiAccordionDetails)
 
-const Gallery = ({ selectImage }) => {
+const Gallery = ({ selectImage, forwardedRef }) => {
 
   const [expanded, setExpanded] = useState(MOVIE[0])
   const [selectedImg, setSelectedImg] = useState('')
@@ -109,7 +109,7 @@ const Gallery = ({ selectImage }) => {
   }, [])
 
   return (
-    <div className="gallery">
+    <div className="gallery" ref={forwardedRef}>
       <div className="gallery__header">
         <h2 className="gallery__title">選擇一張圖片進行創作</h2>
         <Button onClick={toggleViewMode}>
@@ -124,7 +124,7 @@ const Gallery = ({ selectImage }) => {
           MOVIE.map(movie => (
             <Accordion 
               square 
-              expanded={expanded === movie} o
+              expanded={expanded === movie}
               onChange={handleChange(movie)}
               key={movie}
             >
@@ -182,4 +182,4 @@ const Gallery = ({ selectImage }) => {
 
 Gallery.propTypes = {}
 
-export default Gallery
+export default forwardRef((props, ref) => <Gallery {...props} forwardedRef={ref} />)

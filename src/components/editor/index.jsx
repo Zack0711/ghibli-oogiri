@@ -188,12 +188,17 @@ const Editor = props => {
     const inActiveRange = (clientX >= left && clientX <= right) && (clientY >= top && clientY <= bottom)
 
     if (inActiveRange) {
+      const dx = isInitial ? 0 : clientX - x - pos.x
+      const dy = isInitial ? 0 : clientY - y - pos.y
+
       const newPos = {
         x: clientX - x,
         y: clientY - y,
-        dx: isInitial ? 0 : clientX - x - pos.x,
-        dy: isInitial ? 0 : clientY - y - pos.y,
+        dx,
+        dy,
       }
+
+      if (selectedText >= 0) moveText(dx, dy)
       setPos(newPos)
     }
   }
@@ -254,10 +259,10 @@ const Editor = props => {
     setTextList(newList)
   }
 
-  const moveText = () => {
+  const moveText = (dx, dy) => {
     setSelectedTextPros({
-      x: textList[selectedText].x + pos.dx,
-      y: textList[selectedText].y + pos.dy,
+      x: textList[selectedText].x + dx,
+      y: textList[selectedText].y + dy,
     })
   }
 
@@ -326,12 +331,6 @@ const Editor = props => {
     setTextList(newList)
     scaleRef.current = scale
   }, [scale])
-
-  useEffect(() => {
-    if (selectedText >= 0) {
-      moveText()
-    }
-  }, [pos])
 
   useEffect(() => {
     if (!isClient) return false
@@ -417,6 +416,7 @@ const Editor = props => {
                   index={i}
                   isSelected={i === selectedText}
                   selectHandler={handleTextSelect}
+                  textPropsChange={textPropsChange}
                   handleBBoxChange={bBox => textPropsChange('bBox', bBox) }
                   scale={scale}
                   fontFamily={fontFamily.value}
@@ -525,17 +525,19 @@ const Editor = props => {
               open={previewerModalOpen}
               onClose={() => setPreviewerModalOpen(false)}
             >
-              <Previewer
-                svgNode={svgRef.current}
-                imgUrl={imgUrl}
-                fontFamily={fontFamily}
-                svgProps={svgProps}
-                onClose={() => setPreviewerModalOpen(false)}
-                imgWidth={IMG_WIDTH}
-                imgHeight={IMG_HEIGHT}
-                bannerHeight={BANNER_HEIGHT}
-                scale={scale}
-              />
+              <>
+                <Previewer
+                  svgNode={svgRef.current}
+                  imgUrl={imgUrl}
+                  fontFamily={fontFamily}
+                  svgProps={svgProps}
+                  onClose={() => setPreviewerModalOpen(false)}
+                  imgWidth={IMG_WIDTH}
+                  imgHeight={IMG_HEIGHT}
+                  bannerHeight={BANNER_HEIGHT}
+                  scale={scale}
+                />
+              </>
             </Modal>
           </div>
         </div>
@@ -545,9 +547,12 @@ const Editor = props => {
         onClose={() => setGalleryModalOpen(false)}
         keepMounted={true}
       >
-        <Gallery
-          selectImage={selectImage}
-        />
+        <>
+          <Gallery
+            selectImage={selectImage}
+            tabIndex={-1}
+          />
+        </>
       </Modal>
     </div>
   )

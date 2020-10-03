@@ -119,11 +119,13 @@ const BannerEditor = ({
             open={textEditModalOpen}
             onClose={() => setTextEditModalOpen(false)}
           >
-            <TextInput
-              text={bannerProps.text}
-              textUpdate={ text => handleBannerPropsChange('text', text)}
-              onClose={() => setTextEditModalOpen(false)}
-            />
+            <>
+              <TextInput
+                text={bannerProps.text}
+                textUpdate={ text => handleBannerPropsChange('text', text)}
+                onClose={() => setTextEditModalOpen(false)}
+              />
+            </>
           </Modal>
         </div>
         <div className="banner-editor__row">

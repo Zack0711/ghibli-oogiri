@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, forwardRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
@@ -57,6 +57,7 @@ const Previewer = ({
   bannerHeight,
   scale,
   fontFamily,
+  forwardedRef,
 }) => {
 
   const canvasRef = useRef(null)
@@ -218,6 +219,7 @@ const Previewer = ({
           'previewer--converting': isConverting,
           'previewer--has-imgur-link': imgurLink,
         }) }
+      ref={forwardedRef}
     >
       <div className="previewer__wrap">
         <div
@@ -306,4 +308,5 @@ const Previewer = ({
 
 Previewer.propTypes = {}
 
-export default Previewer
+//export default Previewer
+export default forwardRef((props, ref) => <Previewer {...props} forwardedRef={ref} />)
