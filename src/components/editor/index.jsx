@@ -24,6 +24,8 @@ import TextEditor from './text-editor'
 import Banner from './banner'
 import BannerEditor from './banner-editor'
 
+import TextAnimate from './text-animate'
+
 import {
   creatSVGNode,
   getSVGBlob,
@@ -41,22 +43,17 @@ const IMG_HEIGHT = 1038 * FACTOR
 const BANNER_HEIGHT = (IMG_WIDTH - IMG_HEIGHT) / 2
 
 const DEFAULT_TEXT_PROPS = {
-  x: IMG_WIDTH / 2,
-  y: IMG_HEIGHT / 2,
+  x: 0,
+  y: 0,
   color: '#000',
   background: 'transparent',
   text: '',
   rotate: 0,
-  size: 18,
+  size: 20,
   strokeWidth: 0,
   stroke: '#fff',
   textAnchor: 'start',
-  bBox: {
-    x:0, 
-    y:0, 
-    width:0, 
-    height:0,
-  },
+  zoom: 1,
 }
 
 const DEFAULT_BANNER_PROPS = {
@@ -133,11 +130,12 @@ const Editor = props => {
   const svgImgRef = useRef(null)
   const scaleRef = useRef(1)
 
-  const [imgUrl, setImgUrl] = useState('')
+  const [imgUrl, setImgUrl] = useState('kazetachinu002.jpg')
   const [previousTextProps, setPreviousTextProps] = useState({})
 
   const [pos, setPos] = useState({x: 0, y: 0, dx:0, dy: 0})
   const [isMouseDown, setIsMouseDown] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
 
   const [textList, setTextList] = useState([])
   const [selectedText, setSelectedText] = useState(-1)
@@ -153,7 +151,7 @@ const Editor = props => {
   const [fontFamily, setFontFamily] = useState(FONT_OPTIONS[0])
 
   const [previewerModalOpen, setPreviewerModalOpen] = useState(false)
-  const [galleryModalOpen, setGalleryModalOpen] = useState(true)
+  const [galleryModalOpen, setGalleryModalOpen] = useState(false)
 
   const textPropsChange = (key, value) => {
     if (selectedText >= 0) setSelectedTextPros({[key]: value})    
@@ -198,7 +196,7 @@ const Editor = props => {
         dy,
       }
 
-      if (selectedText >= 0) moveText(dx, dy)
+      // if (selectedText >= 0) moveText(dx, dy)
       setPos(newPos)
     }
   }
@@ -251,12 +249,14 @@ const Editor = props => {
   }
 
   const setSelectedTextPros = (pros) => {
-    const newList = [...textList]
-    newList[selectedText] = {
-      ...newList[selectedText],
-      ...pros,
+    if (selectedText > -1) {
+      const newList = [...textList]
+      newList[selectedText] = {
+        ...newList[selectedText],
+        ...pros,
+      }
+      setTextList(newList)      
     }
-    setTextList(newList)
   }
 
   const moveText = (dx, dy) => {
@@ -272,8 +272,8 @@ const Editor = props => {
       ...DEFAULT_TEXT_PROPS,
       ...previousTextProps,
       text: '',
-      x: IMG_WIDTH * scale / 2,
-      y: IMG_HEIGHT * scale / 2,
+      x: 0,
+      y: 0,
     })
 
     setTextList(newList)
@@ -350,10 +350,6 @@ const Editor = props => {
       className="editor"
       onTouchMove={handleMouseTouchMove}
       onMouseMove={handleMouseTouchMove}
-      onClick={() => {
-        unselectText()
-        unselectBanner()
-      }}
     >
       <div 
         className="editor__wrap"
@@ -396,7 +392,13 @@ const Editor = props => {
               ref={svgImgRef}
             >
               <g
-                transform={`scale(${scale} ${scale})`}
+                transform={`scale(${scale})`}
+                onClick={() => {
+                  if (!isDragging) {
+                    unselectText()
+                    unselectBanner()
+                  }
+                }}
               >
                 {
                   imgUrl && (
@@ -415,11 +417,13 @@ const Editor = props => {
                   key={i}
                   index={i}
                   isSelected={i === selectedText}
-                  selectHandler={handleTextSelect}
-                  textPropsChange={textPropsChange}
-                  handleBBoxChange={bBox => textPropsChange('bBox', bBox) }
+                  onChange={setSelectedTextPros}
                   scale={scale}
                   fontFamily={fontFamily.value}
+                  imgWidth={IMG_WIDTH}
+                  imgHeight={IMG_HEIGHT}
+                  onSelect={handleTextSelect}
+                  toggleDragging={ dragging => setIsDragging(dragging) }
                 />)
               }
             </g>

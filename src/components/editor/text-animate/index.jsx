@@ -1,66 +1,41 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useGesture } from 'react-use-gesture'
+
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import './index.styl'
 
-const Text = ({
-  x, 
-  y, 
-  color, 
-  background,
-  zoom,
-  rotate,
-  text,
-  size,
-  fontFamily,
-  strokeWidth,
-  stroke,
-  textAnchor,
-  onSelect,
-  isSelected, 
-  index,
-  scale,
-  imgWidth,
-  imgHeight,
-  onChange,
-}) => {
+const TextAnimate = ({imgWidth, imgHeight, scale}) => {
   const textRef = useRef(null)
   const scaleRef = useRef(null)
 
+  const text = '測試文字！！'
   const [textBBox, setTextBBox] = useState({x:0, y:0, width:0, height:0})
-  const [textState, setTextState] = useState({
+
+  const [textProps, set] = useState({
     rotate: 0,
     zoom: 1,
     x: 0,
     y: 0,
   })
 
-  const getX = () => imgWidth * scale / 2 + x
-  const getY = () => imgHeight * scale / 2 + y
+  const [drag, setDrag] = useState(false)
 
-  const handleOnPinch = ({ offset: [d, a] }) => {
-    const rotate = a >= 0 ? a : 360 + a
-    //setTextState({ ...textState, zoom: d / 200, rotate: a })
-    onChange({ zoom: d / 200, rotate })
-  }
+  const getX = () => imgWidth * scale / 2 + textProps.x
+  const getY = () => imgHeight * scale / 2 + textProps.y
+  const getTextProps = () => textProps
 
   const bind = useGesture(
     {
-      onDragStart: () => {
-        onSelect(index)
-      },
-      onDrag: ({ movement: [x, y] }) => {
-        isSelected && onChange({ x, y })
-      },
-      onDragEnd: () => {
-      },
-      onPinch: handleOnPinch,
+      onDragStart: () => setDrag(true),
+      onDrag: ({ movement: [x, y] }) => set({ ...textProps, x, y }),
+      onDragEnd: () => setDrag(false),
+      onPinch: ({ offset: [d, a] }) => set({ ...textProps, zoom: d / 200, rotate: a }),
     },{
       drag: { 
-        initial: () => [ x, y],
+        initial: () => [ textProps.x, textProps.y],
         bounds: { 
           left: - imgWidth * scale / 2, 
           right: imgWidth * scale / 2, 
@@ -81,14 +56,14 @@ const Text = ({
     if(textRef.current) {
       setTextBBox(textRef.current.getBBox())
     }
-  }, [text, textAnchor, scale])
+  }, [text])
 
   useEffect(() => {
     if (scaleRef.current) {
-      setTextState({ 
-        ...textState, 
-        x: textState.x / scaleRef.current * scale, 
-        y: textState.y / scaleRef.current * scale,
+      set({ 
+        ...textProps, 
+        x: textProps.x / scaleRef.current * scale, 
+        y: textProps.y / scaleRef.current * scale,
       })      
     }
     scaleRef.current = scale
@@ -97,7 +72,7 @@ const Text = ({
   return (
     <g
       { ...bind() }
-      transform={`translate(${getX()} ${getY()}) rotate(${rotate}) scale(${zoom * scale})`}
+      transform={`translate(${getX()} ${getY()}) rotate(${textProps.rotate}) scale(${textProps.zoom * scale})`}
     >
       <g
         transform={`translate(${-textBBox.width/2 - (textBBox.x)} ${-textBBox.height/2})`}
@@ -105,25 +80,21 @@ const Text = ({
         <rect 
           width={textBBox.width} 
           height={textBBox.height}
-          fill={background}
+          fill="transparent"
           x={textBBox.x}
         />
         <g
           ref={textRef}
-          fontSize={`${40}px`}
-          fontFamily={fontFamily}
+//          fontSize={`${40*(1 + zoom.value)}px`}
+          fontSize={`20px`}
         >
           {
             text.split(/[\n\r|\n|\r\n]/).map( (d, i) => (
               <text
                 dominantBaseline="text-before-edge"
-                textAnchor={textAnchor}
-                strokeWidth={strokeWidth}
-                stroke={stroke}
-                fill={color}
                 key={i}
                 x={0}
-                y={ i * size * scale * 1.2}
+                y={0}
               >
                 { d }
               </text>
@@ -134,7 +105,7 @@ const Text = ({
           width={textBBox.width} 
           height={textBBox.height}
           fill="transparent"
-          stroke={ isSelected ? 'white' : 'transparent' }
+          stroke={'white'}
           x={textBBox.x}
         />
       </g>
@@ -142,6 +113,6 @@ const Text = ({
   )
 }
 
-Text.propTypes = {}
+TextAnimate.propTypes = {}
 
-export default Text
+export default TextAnimate

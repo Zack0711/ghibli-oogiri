@@ -29,6 +29,7 @@ import TextInput from '../text-input'
 
 const FONT_SIZES = [14, 16, 18, 20, 22, 24, 26, 28, 32, 36, 40, 44, 48, 56, 64, 72, 80, 88, 96, 114]
 const TEXT_STROKE_WIDTH = [0, 0.5, 1, 1.5, 2]
+const TEXT_ALIGN = ['start', 'middle', 'end']
 
 const TextEditor = ({
   textProps,
@@ -45,6 +46,15 @@ const TextEditor = ({
 
   const handleTextPropsChange = (key, value) => {
     textPropsChange(key, value)
+  }
+
+  const onAlignChange = () => {
+    let nextIndex = TEXT_ALIGN.indexOf(textProps.textAnchor) + 1
+
+    if(nextIndex >= TEXT_ALIGN.length ) nextIndex = 0
+
+    textPropsChange('textAnchor', TEXT_ALIGN[nextIndex])
+//handleTextPropsChange('size', e.target.value)    
   }
 
   const setColor = key => color => {
@@ -136,22 +146,11 @@ const TextEditor = ({
         </div>
         <div className="text-editor__row">
           <Button 
-            variant={ textProps.textAnchor === 'start' ? 'contained' : 'text'}
-            onClick={ () => handleTextPropsChange('textAnchor', 'start')}
+            onClick={onAlignChange}
           >
-            <FormatAlignLeftIcon/>
-          </Button>
-          <Button 
-            variant={ textProps.textAnchor === 'middle' ? 'contained' : 'text'}
-            onClick={ () => handleTextPropsChange('textAnchor', 'middle')}
-          >
-            <FormatAlignCenterIcon/>
-          </Button>
-          <Button 
-            variant={ textProps.textAnchor === 'end' ? 'contained' : 'text'}
-            onClick={ () => handleTextPropsChange('textAnchor', 'end')}
-          >
-            <FormatAlignRightIcon/>
+            { textProps.textAnchor === 'start' && <FormatAlignLeftIcon/> }
+            { textProps.textAnchor === 'middle' && <FormatAlignCenterIcon/> }
+            { textProps.textAnchor === 'end' && <FormatAlignRightIcon/> }
           </Button>
           <div className="text-editor__rotate-slider">
             <div className="text-editor__rotate-slider-wrap">

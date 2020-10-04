@@ -56,6 +56,8 @@
     "react-dom": "^16.13.1",
     "react-i18next": "^11.7.0",
     "react-redux": "^7.2.0",
+    "react-spring": "^8.0.27",
+    "react-use-gesture": "^7.0.16",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0"
   }
