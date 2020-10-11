@@ -18,6 +18,7 @@ import Selector from '../selector'
 import IconLabel from '../icon-label'
 import Previewer from '../previewer'
 import Gallery from '../gallery'
+import ImageImporter from '../image-importer'
 
 import Text from './text'
 import TextEditor from './text-editor'
@@ -545,7 +546,7 @@ const Editor = props => {
         onClose={() => setGalleryModalOpen(false)}
         keepMounted={true}
       >
-        <Gallery
+        <ImageImporter
           selectImage={selectImage}
         />
       </Modal>
