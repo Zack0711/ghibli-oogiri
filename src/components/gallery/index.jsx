@@ -28,6 +28,12 @@ const MOVIE = [
   'ponyo',
   'ged',
   'chihiro',
+  'howl',
+  'baron',
+  'ghiblies',
+  'yamada',
+  'mononoke',
+  'mimi',
 ]
 
 const MOVIE_NAME = {
@@ -39,6 +45,12 @@ const MOVIE_NAME = {
   ponyo: '崖上的波妞',
   ged: '地海戰記',
   chihiro: '神隱少女',
+  howl: '霍爾的移動城堡',
+  baron: '貓的報恩',
+  ghiblies: 'Ghiblies',
+  yamada: '隔壁的山田君',
+  mononoke: '魔法公主',
+  mimi: '心之谷',
 }
 
 const PIC = genArray(50)
