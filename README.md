@@ -4,6 +4,14 @@
 
 ***
 
+### 2020-10-22 更新項目
+- 新增10/6釋出的第二彈高清劇照，[來源](http://www.ghibli.jp/info/013358/ "Resources Link")
+
+![Introfuction Image](/intro/intro-6.jpg "Introfuction Image")
+
+
+***
+
 #### 啟動吧！吉卜力-大喜利號
 吉卜力在2020-09-18釋出了400張動畫靜止圖片，讓大家在常識範圍內自由使用，大喜利號是個幫助你瀏覽、編輯和創作那些圖片的工具。
 
