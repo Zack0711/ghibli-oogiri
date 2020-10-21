@@ -7,8 +7,7 @@
 ### 2020-10-22 更新項目
 - 新增10/6釋出的第二彈高清劇照，[來源](http://www.ghibli.jp/info/013358/ "Resources Link")
 
-![Introfuction Image](/intro/intro-6.jpg "Introfuction Image")
-
+![Introfuction Image](/intro/intro-7.jpg "Introfuction Image")
 
 ***
 
