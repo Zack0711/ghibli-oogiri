@@ -11,7 +11,21 @@
 </script>
 
 <template>
-  <Artboard />
-  <TextEditor />
-  <Album />
+  <main>
+    <Artboard />
+    <Album />
+  </main>
+  <aside>
+    <TextEditor />
+  </aside>
 </template>
+<style scoped>
+  main {
+    flex: 1 0 0;
+  }
+
+  aside {
+    width: 240px;
+    background-color: bisque;
+  }
+</style>

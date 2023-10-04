@@ -1,12 +1,12 @@
 <script setup lang="ts">
   import { computed, ref, watch, nextTick } from 'vue';
   import { storeToRefs } from 'pinia';
-  import { useTextStore } from '@/stores/text.js';
+  import { useSVGObjectsStore } from '@/stores/svgObjects'
 
-  import { type Position, type TextPayload } from '@/types/text';
+  import { type TextPayload } from '@/types/svgObjects';
 
-  const textStore = useTextStore();
-  const { selectedTextIndex } = storeToRefs(textStore);
+  const svgObjectsStore = useSVGObjectsStore();
+  const { selectedSVGObjectIndex } = storeToRefs(svgObjectsStore);
 
   const textGroupRef = ref(null);
   const textGroupBBox = ref({ width: 0, height: 0 })
@@ -18,7 +18,7 @@
   }>()
   
   const textLines = computed(() => props.payload ? props.payload.content.split(/[\n\r|\n|\r\n]/) : [])
-  const isSelected = computed(() => selectedTextIndex.value === props.index )
+  const isSelected = computed(() => selectedSVGObjectIndex.value === props.index )
 
   watch(() => [props.payload.content, textGroupRef.value], async() => {
     if (textGroupRef.value) {
