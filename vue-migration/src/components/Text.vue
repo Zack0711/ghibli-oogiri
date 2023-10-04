@@ -1,39 +1,48 @@
 <script setup lang="ts">
-  import { computed, ref, onUpdated, onMounted } from 'vue'
+  import { computed, ref, watch, nextTick } from 'vue';
+  import { storeToRefs } from 'pinia';
+  import { useTextStore } from '@/stores/text.js';
+
+  import { type Position, type TextPayload } from '@/types/text';
+
+  const textStore = useTextStore();
+  const { selectedTextIndex } = storeToRefs(textStore);
+
   const textGroupRef = ref(null);
+  const textGroupBBox = ref({ width: 0, height: 0 })
+  const fontSize = ref(12);
 
-  const props = defineProps({
-    text: String,
-    isSelected: Boolean,
-    x: Number,
-    y: Number,
+  const props = defineProps<{
+    payload: TextPayload,
     index: Number,
-  })
+  }>()
   
-  const textLines = computed(() => props.text ? props.text.split(/[\n\r|\n|\r\n]/) : [])
-  const textGroupBBox = computed(() => textGroupRef.value ? textGroupRef.value.getBBox() : { width: 0, height: 0 })
+  const textLines = computed(() => props.payload ? props.payload.content.split(/[\n\r|\n|\r\n]/) : [])
+  const isSelected = computed(() => selectedTextIndex.value === props.index )
 
-  onUpdated(() => {
+  watch(() => [props.payload.content, textGroupRef.value], async() => {
     if (textGroupRef.value) {
-    //  console.log('onUpdated', textGroupRef.value.getBBox())
+      await nextTick()
+      textGroupBBox.value = textGroupRef.value.getBBox()
     }
-  })
+  }, { immediate:true })
 </script>
 <template>
-  <g :transform="'translate(' + x + ',' +  y + ')'">
+  <g :transform="'translate(' + payload.position.x + ',' +  payload.position.y + ')'">
     <g>
-      <rect :width="textGroupBBox.width" :height="textGroupBBox.height" fill="yellow" />
-      <g ref="textGroupRef" font-size="12px">
+      <rect :width="textGroupBBox.width" :height="textGroupBBox.height" :fill="isSelected ? 'yellow' : 'transparent'" />
+      <g ref="textGroupRef" :font-size="fontSize">
         <text
           v-for="(t, i) in textLines"
           :key="'t' + index + '-' + i" 
-          :y="i*12*1.2"
-          dominantBaseline="text-before-edge"
+          :y="i*fontSize*1.2"
+          dominant-baseline="text-before-edge"
           x="0"
         >
           {{ t }}
         </text>
       </g>
+      <rect :width="textGroupBBox.width" :height="textGroupBBox.height" fill="transparent" />
     </g>
   </g>
 </template>

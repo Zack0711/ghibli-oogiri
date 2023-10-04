@@ -1,29 +1,25 @@
 <script setup lang="ts">
-  import { storeToRefs } from "pinia";
+  import { storeToRefs } from 'pinia';
   import { ref } from 'vue';
-  import { useAlbumStore } from "@/stores/album.js";
+  import { useAlbumStore } from '@/stores/album.js';
+  import { useTextStore } from '@/stores/text.js';
+
   import Text from "./Text.vue";
 
   const rootRef= ref(null);
   const position = ref({x: 0, y: 0, dx:0, dy: 0});
   const isMouseDown = ref(false);
-  // const textList = ref([{ x: 0, y: 0, text: '123\n456' }, { x: 50, y: 20, text: '12345' }])
-  const textList = ref([])
-  const selectdText = ref(-1)
+  const selectedText = ref(-1)
 
   const albumStore = useAlbumStore();
+  const textStore = useTextStore();
+
   const { imageUrl } = storeToRefs(albumStore);
-  const { openAlbum } = albumStore;
+  const { list } = storeToRefs(textStore);
+  const { moveText, updateSelectedTextIndex } = textStore
 
   const WIDTH = 1920 / 4;
   const HEIGHT = 1038 / 4;
-
-  function setTextPosition() {
-    if (selectdText.value > -1) {
-      textList.value[selectdText.value].x += position.value.dx;
-      textList.value[selectdText.value].y += position.value.dy;
-    }
-  }
 
   function setRelativePosition(clientX:number, clientY:number, isInitial = false) {
     if (rootRef.value) {
@@ -42,7 +38,6 @@
           dx: isInitial ? 0 : clientX - x - position.value.x,
           dy: isInitial ? 0 : clientY - y - position.value.y,
         }
-        setTextPosition();
       }
     }
   }
@@ -58,7 +53,6 @@
 
   function handleMouseTouchUp(){
     isMouseDown.value = false
-    selectdText.value = -1
   }
 
   function move(e) {
@@ -68,17 +62,14 @@
     } = ( e.clientX ? e : e.touches[0] )
     if (isMouseDown.value) {
       setRelativePosition(clientX, clientY)
+      moveText(position.value.dx, position.value.dy)
     }
-  }
-
-  function selectText(index:number) {
-    selectdText.value = index;
   }
 </script>
 <template> 
   <main>
     <div @mousemove="move" @touchmove="move" class="svg-wrapper">
-      <svg :width="WIDTH" :height="HEIGHT" xmlns="http://www.w3.org/2000/svg">
+      <svg :width="WIDTH" :height="HEIGHT" :viewBox="'0 0 ' + WIDTH + ' ' + HEIGHT" xmlns="http://www.w3.org/2000/svg">
         <g 
           ref="rootRef"
           @touchstart="handleMouseTouchDown"
@@ -87,15 +78,13 @@
           @mouseup="handleMouseTouchUp"
           transform="translate(0 0)"
         >
-          <image :href="imageUrl" :width="WIDTH" :height="HEIGHT" />
-          <g transform="translate(100, 20)">
-            <rect width="90" height="20" fill="blue" x="0" y="0" />
-            <text dominantBaseline="text-before-edge" x="0" y="0">1234</text>
-          </g>
+          <image :href="imageUrl" :width="WIDTH" :height="HEIGHT" @click="() => updateSelectedTextIndex(-1)" />
           <Text
-            v-for="(t, index) in textList"
-            :key="'t' + index" :index="index" :x="t.x" :y="t.y" :text="t.text"
-            @mousedown="selectText(index)"
+            v-for="(t, index) in list"
+            :key="'t' + index" 
+            :index="index" 
+            :payload="t"
+            @mousedown="() => updateSelectedTextIndex(index)"
           />
         </g>
       </svg>
@@ -105,10 +94,6 @@
 <style scoped>
   img {
     width: 100%;
-  }
-  main {
-    display: flex;
-    justify-content: center;
   }
   .svg-wrapper {
     display: flex;

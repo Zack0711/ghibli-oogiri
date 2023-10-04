@@ -2,6 +2,7 @@
   import { storeToRefs } from "pinia";
   import { useAlbumStore } from "@/stores/album.js";
   import Artboard from './components/Artboard.vue';
+  import TextEditor from "./components/TextEditor.vue";
   import Album from './components/Album.vue';
 
   const albumStore = useAlbumStore();
@@ -11,5 +12,6 @@
 
 <template>
   <Artboard />
+  <TextEditor />
   <Album />
 </template>
