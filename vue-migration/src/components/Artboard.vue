@@ -1,22 +1,19 @@
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { ref } from 'vue';
-  import { useAlbumStore } from '@/stores/album.js';
-  import { useTextStore } from '@/stores/text.js';
+  import { storeToRefs } from 'pinia';
+  import { useSVGObjectsStore } from '@/stores/svgObjects'
 
-  import Text from "./Text.vue";
+  import Image from './Image.vue';
+  import SVGObject from './SVGObject.vue';
 
   const rootRef= ref(null);
   const position = ref({x: 0, y: 0, dx:0, dy: 0});
   const isMouseDown = ref(false);
-  const selectedText = ref(-1)
 
-  const albumStore = useAlbumStore();
-  const textStore = useTextStore();
+  const svgObjectsStore = useSVGObjectsStore();
 
-  const { imageUrl } = storeToRefs(albumStore);
-  const { list } = storeToRefs(textStore);
-  const { moveText, updateSelectedTextIndex } = textStore
+  const { list } = storeToRefs(svgObjectsStore)
+  const { moveSVGObject, setSelectedSVGObjectIndex } = svgObjectsStore
 
   const WIDTH = 1920 / 4;
   const HEIGHT = 1038 / 4;
@@ -62,39 +59,34 @@
     } = ( e.clientX ? e : e.touches[0] )
     if (isMouseDown.value) {
       setRelativePosition(clientX, clientY)
-      moveText(position.value.dx, position.value.dy)
+      moveSVGObject(position.value.dx, position.value.dy)
     }
   }
 </script>
 <template> 
-  <main>
-    <div @mousemove="move" @touchmove="move" class="svg-wrapper">
-      <svg :width="WIDTH" :height="HEIGHT" :viewBox="'0 0 ' + WIDTH + ' ' + HEIGHT" xmlns="http://www.w3.org/2000/svg">
-        <g 
-          ref="rootRef"
-          @touchstart="handleMouseTouchDown"
-          @mousedown="handleMouseTouchDown" 
-          @touchend="handleMouseTouchUp"
-          @mouseup="handleMouseTouchUp"
-          transform="translate(0 0)"
-        >
-          <image :href="imageUrl" :width="WIDTH" :height="HEIGHT" @click="() => updateSelectedTextIndex(-1)" />
-          <Text
-            v-for="(t, index) in list"
-            :key="'t' + index" 
-            :index="index" 
-            :payload="t"
-            @mousedown="() => updateSelectedTextIndex(index)"
-          />
-        </g>
-      </svg>
-    </div>
-  </main>
+  <div @mousemove="move" @touchmove="move" class="svg-wrapper">
+    <svg :width="WIDTH" :height="HEIGHT" :viewBox="'0 0 ' + WIDTH + ' ' + HEIGHT" xmlns="http://www.w3.org/2000/svg">
+      <g 
+        ref="rootRef"
+        @touchstart="handleMouseTouchDown"
+        @mousedown="handleMouseTouchDown" 
+        @touchend="handleMouseTouchUp"
+        @mouseup="handleMouseTouchUp"
+        transform="translate(0 0)"
+      >
+        <Image @click="() => setSelectedSVGObjectIndex(-1)" />
+        <SVGObject
+          v-for="(objectPayload, index) in list"
+          :key="'svgObj-' + index" 
+          :index="index" 
+          :payload="objectPayload"
+          @mousedown="() => setSelectedSVGObjectIndex(index)"
+        />
+      </g>
+    </svg>
+  </div>
 </template>
 <style scoped>
-  img {
-    width: 100%;
-  }
   .svg-wrapper {
     display: flex;
   }

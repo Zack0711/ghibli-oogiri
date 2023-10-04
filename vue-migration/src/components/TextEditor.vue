@@ -1,34 +1,36 @@
 <script setup lang="ts">
-  import { ref, onUpdated, watch, computed } from 'vue';
+  import { ref, watch, computed } from 'vue';
   import { storeToRefs } from 'pinia';
-  import { useTextStore } from '@/stores/text.js';
+  import { useSVGObjectsStore } from '@/stores/svgObjects'
 
-  const textStore = useTextStore();
-  const { selectedTextIndex } = storeToRefs(textStore);
-  const { getTextByIndex, create, update } = textStore;
+  const svgObjectsStore = useSVGObjectsStore()
 
-  const WIDTH = 1920 / 4;
-  const HEIGHT = 1038 / 4;
+  const { selectedSVGObjectIndex } = storeToRefs(svgObjectsStore);
+  const { getSVGObjectByIndex, selectedSVGObjectType, create, update } = svgObjectsStore
 
   const text = ref('');
-  const submitButtonLabel = computed(() => selectedTextIndex.value > -1 ? 'Update' : 'Add' )
+  const submitButtonLabel = computed(() => selectedSVGObjectType === 'TEXT' ? 'Update' : 'Add' )
 
   function submitText(){
-    if (selectedTextIndex.value > -1) {
+    if (selectedSVGObjectType === 'TEXT') {
       update({ content: text.value })
     } else {
       create({
+        type: 'TEXT',
         position: { x: 120, y: 60 },
-        content: text.value
+        content: text.value,
+        fontSize: 12,
+        moveable: true,
+        backgroundColor: 'transparent',
       })
       text.value = ''
     }
   }
 
-  watch(selectedTextIndex, () => {
-    const selectedText = getTextByIndex(selectedTextIndex.value);
-    if (selectedText) {
-      text.value = selectedText.content
+  watch(selectedSVGObjectIndex, () => {
+    const svgObject = getSVGObjectByIndex(selectedSVGObjectIndex.value);
+    if (svgObject && svgObject.type === 'TEXT') {
+      text.value = svgObject.content
     } else {
       text.value = ''
     }
