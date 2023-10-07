@@ -21,6 +21,8 @@ export interface TextPayload extends ObjectBasicPayload {
 export interface ImagePayload extends ObjectBasicPayload {
   type: 'IMAGE'
   imageName: string
+  height: number
+  width: number
 }
 
 export interface UpdatePayload {
@@ -28,6 +30,8 @@ export interface UpdatePayload {
   content?: string
   backgroundColor?: string
   imageName?: string
+  height?: number
+  width?: number
 }
 
 export type SVGObjectPayload = ImagePayload | TextPayload
