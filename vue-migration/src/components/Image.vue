@@ -1,14 +1,19 @@
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import { useAlbumStore } from '@/stores/album.js';
-  const WIDTH = 1920 / 4;
-  const HEIGHT = 1038 / 4;
+import { computed } from 'vue'
 
-  const albumStore = useAlbumStore();
-  const { imageUrl } = storeToRefs(albumStore);
+import { type ImagePayload } from '@/types/svgObjects'
+
+import artboardStore from '@/stores/artboard'
+const { scale } = artboardStore()
+
+const props = defineProps<{
+  payload: ImagePayload
+  index: Number
+}>()
+const imageUrl = computed(() =>
+  props.payload ? new URL(`../assets/${props.payload.imageName}.jpg`, import.meta.url).href : ''
+)
 </script>
 <template>
-  <g>
-    <image :href="imageUrl" :width="WIDTH" :height="HEIGHT" />
-  </g>
+  <image :href="imageUrl" :width="payload.width * scale" :height="payload.height * scale" />
 </template>

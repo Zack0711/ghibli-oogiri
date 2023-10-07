@@ -1,11 +1,15 @@
 <script setup lang="ts">
-  import { type SVGObjectPayload } from '@/types/svgObjects';
-  import Text from "./Text.vue";
-  const props = defineProps<{
-    payload: SVGObjectPayload,
-    index: Number,
-  }>()
+import { type SVGObjectPayload } from '@/types/svgObjects'
+import Text from './Text.vue'
+import Image from './Image.vue'
+const props = defineProps<{
+  payload: SVGObjectPayload
+  index: Number
+}>()
 </script>
 <template>
-  <Text v-if="payload.type==='TEXT'" :payload="payload" :index="index" />
+  <g :transform="'translate(' + payload.position.x + ',' + payload.position.y + ')'">
+    <Text v-if="payload.type === 'TEXT'" :payload="payload" :index="index" />
+    <Image v-if="payload.type === 'IMAGE'" :payload="payload" :index="index" />
+  </g>
 </template>
