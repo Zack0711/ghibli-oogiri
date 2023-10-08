@@ -1,23 +1,38 @@
-import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import { defineStore, storeToRefs } from 'pinia'
 
-export const useAlbumStore = defineStore('album', {
-  state: () => ({
-    isOpen: false,
-    selectedImage: 'baron001',
-    images: ['baron001', 'baron002', 'baron003', 'baron004']
-  }),
-  getters: {
-    imageUrl: (state) => new URL(`../assets/${state.selectedImage}.jpg`, import.meta.url).href
-  },
-  actions: {
-    selectImage(img: string) {
-      this.selectedImage = img
-    },
-    closeAlbum() {
-      this.isOpen = false
-    },
-    openAlbum() {
-      this.isOpen = true
-    }
+let store
+
+export const useAlbumStore = defineStore('album', () => {
+  const isOpen = ref(false)
+  const images = ref(['baron001', 'baron002', 'baron003', 'baron004'])
+
+  function closeAlbum() {
+    isOpen.value = false
+  }
+
+  function openAlbum() {
+    isOpen.value = true
+  }
+
+  return {
+    isOpen,
+    images,
+    closeAlbum,
+    openAlbum
   }
 })
+
+export default () => {
+  if (!store) {
+    store = useAlbumStore()
+  }
+  const { isOpen, images } = storeToRefs(store)
+  const { closeAlbum, openAlbum } = store
+  return {
+    isOpen,
+    images,
+    closeAlbum,
+    openAlbum
+  }
+}

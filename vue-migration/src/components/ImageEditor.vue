@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useAlbumStore } from '@/stores/album.js'
-const albumeStore = useAlbumStore()
+import editorStore from '@/stores/editor'
+const { openAlbum } = editorStore()
 </script>
 <template>
-  <button @click="albumeStore.openAlbum">Open Album</button>
+  <button @click="openAlbum">Open Album</button>
 </template>

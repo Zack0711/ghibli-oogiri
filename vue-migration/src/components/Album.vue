@@ -1,14 +1,21 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { useAlbumStore } from '@/stores/album.js'
+import albumStore from '@/stores/album.js'
+import svgObjectsStore from '@/stores/svgObjects'
+import editorStore from '@/stores/editor'
+
 import Modal from './Modal.vue'
 
-const albumStore = useAlbumStore()
-const { images, isOpen } = storeToRefs(albumStore)
-const { selectImage, closeAlbum } = albumStore
+const { images } = albumStore()
+
+const { isAlbumOpen, closeAlbum } = editorStore()
+const { update } = svgObjectsStore()
+
+function selectImage(img: string) {
+  update({ imageName: img })
+}
 </script>
 <template>
-  <Modal :show="isOpen" @close="closeAlbum">
+  <Modal :show="isAlbumOpen" @close="closeAlbum">
     <template #header>
       <h3>Choose Image</h3>
     </template>

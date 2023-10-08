@@ -1,43 +1,32 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import svgObjectsStore from '@/stores/svgObjects'
-import artboardStore from '@/stores/artboard'
 
-const { selectedSVGObjectIndex, selectedSVGObjectType, getSVGObjectByIndex, create, update } =
-  svgObjectsStore()
-const { scale, artboardSize } = artboardStore()
+const { selectedSVGObjectIndex, getSVGObjectByIndex, update } = svgObjectsStore()
 
 const text = ref('')
-const submitButtonLabel = computed(() =>
-  selectedSVGObjectType.value === 'TEXT' ? 'Update' : 'Add'
-)
 
 function submitText() {
-  if (selectedSVGObjectType.value === 'TEXT') {
-    update({ content: text.value })
-  } else {
-    create({
-      type: 'TEXT',
-      position: { x: artboardSize.value.width / 2, y: artboardSize.value.height / 2 },
-      content: text.value,
-      fontSize: 24,
-      moveable: true,
-      backgroundColor: 'transparent'
-    })
-    text.value = ''
-  }
+  update({ content: text.value })
 }
 
-watch(selectedSVGObjectIndex, () => {
+watch(
+  () => [selectedSVGObjectIndex.value],
+  async () => {
+    if (selectedSVGObjectIndex.value) {
+      const svgObject = getSVGObjectByIndex(selectedSVGObjectIndex.value)
+      text.value = svgObject.content
+    }
+  },
+  { immediate: true }
+)
+
+onMounted(() => {
   const svgObject = getSVGObjectByIndex(selectedSVGObjectIndex.value)
-  if (svgObject && svgObject.type === 'TEXT') {
-    text.value = svgObject.content
-  } else {
-    text.value = ''
-  }
+  text.value = svgObject.content
 })
 </script>
 <template>
   <textarea :value="text" @input="(e) => (text = e.target.value)" />
-  <button @click="submitText">{{ submitButtonLabel }}</button>
+  <button @click="submitText">Update</button>
 </template>
