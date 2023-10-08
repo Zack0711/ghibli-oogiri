@@ -33,7 +33,7 @@ watch(
 )
 </script>
 <template>
-  <g>
+  <g :transform="'translate(' + -textGroupBBox.width / 2 + ',' + -textGroupBBox.height / 2 + ')'">
     <rect
       :width="textGroupBBox.width"
       :height="textGroupBBox.height"

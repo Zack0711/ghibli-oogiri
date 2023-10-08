@@ -12,6 +12,7 @@ export const useSVGObjectsStore = defineStore('svgObjects', () => {
   const selectedSVGObjectType = computed(() => list.value[selectedSVGObjectIndex.value]?.type || '')
 
   function create(payload: SVGObjectPayload) {
+    selectedSVGObjectIndex.value = list.value.length
     list.value.push(payload)
   }
 

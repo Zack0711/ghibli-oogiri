@@ -16,7 +16,7 @@ export const useArtboardStore = defineStore('artboard', () => {
   }))
 
   function updateScale(innerWidth: number) {
-    scale.value = (innerWidth - 155) / baseSize.value.width
+    scale.value = (innerWidth - 240) / baseSize.value.width
   }
 
   return {

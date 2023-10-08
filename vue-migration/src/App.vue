@@ -3,6 +3,7 @@ import { onMounted, onUnmounted } from 'vue'
 
 import Artboard from '@/components/Artboard.vue'
 import Album from '@/components/Album.vue'
+import CreateTextModal from './components/CreateTextModal.vue'
 import Editor from '@/components/Editor.vue'
 
 import artboardStore from '@/stores/artboard'
@@ -38,6 +39,7 @@ onUnmounted(() => {
   <main>
     <Artboard />
     <Album />
+    <CreateTextModal />
   </main>
   <aside>
     <Editor />
