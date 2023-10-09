@@ -3,13 +3,12 @@ import svgObjectsStore from '@/stores/svgObjects'
 import editorStore from '@/stores/editor'
 
 import TextEditor from './TextEditor.vue'
-import ImageEditor from './ImageEditor.vue'
 
 const { selectedSVGObjectType } = svgObjectsStore()
-const { openCreateTextModal } = editorStore()
+const { openCreateTextModal, openAlbum } = editorStore()
 </script>
 <template>
-  <TextEditor v-if="selectedSVGObjectType === 'TEXT'" />
-  <ImageEditor v-if="selectedSVGObjectType === 'IMAGE'" />
+  <button @click="openAlbum">Open Album</button>
   <button @click="openCreateTextModal">Add Text</button>
+  <TextEditor v-if="selectedSVGObjectType === 'TEXT'" />
 </template>
