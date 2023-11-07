@@ -17,6 +17,8 @@ export interface TextPayload extends ObjectBasicPayload {
   type: 'TEXT'
   content: string
   fontSize: number
+  fontColor: string
+  textAnchor: string
 }
 
 export interface ImagePayload extends ObjectBasicPayload {
@@ -29,6 +31,8 @@ export interface ImagePayload extends ObjectBasicPayload {
 export interface UpdatePayload {
   position?: Position
   content?: string
+  fontColor?: string
+  textAnchor?: string
   backgroundColor?: string
   imageName?: string
   height?: number

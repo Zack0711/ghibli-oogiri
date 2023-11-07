@@ -1,6 +1,8 @@
 import { ref, computed } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 
+import { type TextPayload } from '@/types/svgObjects'
+
 import svgObjectsStore from './svgObjects'
 
 let store
@@ -16,7 +18,20 @@ export const useArtboardStore = defineStore('artboard', () => {
   }))
 
   function updateScale(innerWidth: number) {
-    scale.value = (innerWidth - 240) / baseSize.value.width
+    const newScale = innerWidth / baseSize.value.width
+    const scaleProportion = newScale / scale.value
+    list.value.forEach((obj:TextPayload, i:number) => {
+      if (obj.type === 'TEXT') {
+        update({
+          position: {
+            x: obj.position.x * scaleProportion,
+            y: obj.position.y * scaleProportion,
+          },
+          i
+        })
+      }
+    })
+    scale.value = newScale
   }
 
   return {

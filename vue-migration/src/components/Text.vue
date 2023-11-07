@@ -9,7 +9,7 @@ const { selectedSVGObjectIndex } = svgObjectsStore()
 const { scale } = artboardStore()
 
 const textGroupRef = ref(null)
-const textGroupBBox = ref({ width: 0, height: 0 })
+const textGroupBBox = ref({ width: 0, height: 0, x: 0, y: 0 })
 
 const props = defineProps<{
   payload: TextPayload
@@ -25,6 +25,12 @@ const rectSize = computed(() => ({
   height: textGroupBBox.value.height + 8
 }))
 
+const groupTransform = computed(() => {
+  const transX = textGroupBBox.value.width / 2 + textGroupBBox.value.x
+  const transY = textGroupBBox.value.height / 2
+  return `translate(${-transX},${-transY})`
+})
+
 watch(
   () => [props.payload.content, textGroupRef.value],
   async () => {
@@ -37,12 +43,14 @@ watch(
 )
 </script>
 <template>
-  <g :transform="'translate(' + -textGroupBBox.width / 2 + ',' + -textGroupBBox.height / 2 + ')'">
+  <g :transform="groupTransform">
     <rect
       :width="rectSize.width"
       :height="rectSize.height"
       :stroke="isSelected ? 'white' : 'transparent'"
-      fill="transparent"
+      :fill="payload.backgroundColor"
+      :filter="isSelected ? 'url(#shadow-filter)' : ''"
+      :x="textGroupBBox.x"
       transform="translate( -4, -4)"
     />
     <g ref="textGroupRef" :font-size="payload.fontSize * scale">
@@ -50,8 +58,10 @@ watch(
         v-for="(t, i) in textLines"
         :key="'t' + index + '-' + i"
         :y="i * payload.fontSize * scale * 1.2"
+        :fill="payload.fontColor"
         dominant-baseline="text-before-edge"
         x="0"
+        :text-anchor="payload.textAnchor"
       >
         {{ t }}
       </text>
@@ -59,6 +69,7 @@ watch(
     <rect
       :width="rectSize.width"
       :height="rectSize.height"
+      :x="textGroupBBox.x"
       fill="transparent"
       transform="translate( -4, -4)"
     />
