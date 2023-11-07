@@ -20,7 +20,10 @@ const textLines = computed(() =>
   props.payload ? props.payload.content.split(/[\n\r|\n|\r\n]/) : []
 )
 const isSelected = computed(() => selectedSVGObjectIndex.value === props.index)
-const rectSize = computed(() => ({ width: textGroupBBox.value.width + 8, height: textGroupBBox.value.height + 8 }))
+const rectSize = computed(() => ({
+  width: textGroupBBox.value.width + 8,
+  height: textGroupBBox.value.height + 8
+}))
 
 watch(
   () => [props.payload.content, textGroupRef.value],
@@ -53,6 +56,11 @@ watch(
         {{ t }}
       </text>
     </g>
-    <rect :width="rectSize.width" :height="rectSize.height" fill="transparent" transform="translate( -4, -4)" />
+    <rect
+      :width="rectSize.width"
+      :height="rectSize.height"
+      fill="transparent"
+      transform="translate( -4, -4)"
+    />
   </g>
 </template>

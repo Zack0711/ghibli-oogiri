@@ -53,6 +53,7 @@ main {
 aside {
   width: 240px;
   background-color: bisque;
+  color: grey;
   padding: 8px;
 }
 </style>
