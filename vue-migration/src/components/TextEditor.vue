@@ -5,6 +5,12 @@ import svgObjectsStore from '@/stores/svgObjects'
 const { selectedSVGObjectIndex, getSVGObjectByIndex, update } = svgObjectsStore()
 
 const text = ref('')
+const rotate = ref(0)
+
+function rotateText() {
+  //console.log('rotateText', rotate.value)
+  update({ rotate: rotate.value })
+}
 
 function submitText() {
   update({ content: text.value })
@@ -27,6 +33,15 @@ onMounted(() => {
 })
 </script>
 <template>
-  <textarea :value="text" @input="(e) => (text = e.target.value)" />
-  <button @click="submitText">Update</button>
+  <v-color-picker :modes="['hexa']"></v-color-picker>
+  <v-slider
+    v-model="rotate"
+    prepend-icon="mdi-restore"
+    max="360"
+    min="0"
+    @start="rotateText"
+    @update:model-value="rotateText"
+  ></v-slider>
+  <v-textarea v-model="text" variant="outlined"></v-textarea>
+  <v-btn @click="submitText">Update</v-btn>
 </template>

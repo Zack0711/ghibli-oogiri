@@ -19,7 +19,8 @@ function submitText() {
     content: text.value,
     fontSize: 24,
     moveable: true,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    rotate: 0
   })
   text.value = ''
   closeCreateTextModal()
@@ -38,8 +39,8 @@ onMounted(() => {
       <textarea :value="text" @input="(e) => (text = e.target.value)" />
     </template>
     <template #footer>
-      <button @click="submitText">Create</button>
-      <button @click="closeCreateTextModal">Cancel</button>
+      <v-btn @click="submitText">Create</v-btn>
+      <v-btn @click="closeCreateTextModal">Cancel</v-btn>
     </template>
   </Modal>
 </template>

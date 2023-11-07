@@ -8,7 +8,7 @@ const { selectedSVGObjectType } = svgObjectsStore()
 const { openCreateTextModal, openAlbum } = editorStore()
 </script>
 <template>
-  <button @click="openAlbum">Open Album</button>
-  <button @click="openCreateTextModal">Add Text</button>
+  <v-btn @click="openAlbum">Open Album</v-btn>
+  <v-btn @click="openCreateTextModal">Add Text</v-btn>
   <TextEditor v-if="selectedSVGObjectType === 'TEXT'" />
 </template>

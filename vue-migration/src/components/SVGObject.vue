@@ -8,7 +8,17 @@ const props = defineProps<{
 }>()
 </script>
 <template>
-  <g :transform="'translate(' + payload.position.x + ',' + payload.position.y + ')'">
+  <g
+    :transform="
+      'translate(' +
+      payload.position.x +
+      ',' +
+      payload.position.y +
+      ') rotate(' +
+      payload.rotate +
+      ')'
+    "
+  >
     <Text v-if="payload.type === 'TEXT'" :payload="payload" :index="index" />
     <Image v-if="payload.type === 'IMAGE'" :payload="payload" :index="index" />
   </g>

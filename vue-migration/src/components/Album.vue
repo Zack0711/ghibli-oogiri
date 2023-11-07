@@ -25,7 +25,7 @@ function selectImage(img: string) {
       </template>
     </template>
     <template #footer>
-      <button @click="closeAlbum">Close</button>
+      <v-btn @click="closeAlbum">Close</v-btn>
     </template>
   </Modal>
 </template>

@@ -10,6 +10,7 @@ export interface ObjectBasicPayload {
   moveable: boolean
   position: Position
   backgroundColor: string
+  rotate: number
 }
 
 export interface TextPayload extends ObjectBasicPayload {
