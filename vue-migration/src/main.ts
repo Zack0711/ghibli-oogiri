@@ -10,6 +10,4 @@ import App from './App.vue'
 
 const app = createApp(App)
 
-app.use(createPinia())
-  .use(vuetify)
-  .mount('#app')
+app.use(createPinia()).use(vuetify).mount('#app')

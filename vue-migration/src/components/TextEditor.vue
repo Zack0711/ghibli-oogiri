@@ -1,47 +1,81 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 import svgObjectsStore from '@/stores/svgObjects'
 
-const { selectedSVGObjectIndex, getSVGObjectByIndex, update } = svgObjectsStore()
+import ColorPicker from './ColorPicker.vue'
+import FontSizeSelector from './FontSizeSelector.vue'
+import TextRotateSlider from './TextRotateSlider.vue'
+import EditTextModal from './EditTextModal.vue'
+
+const { update, selectedSVGObject } = svgObjectsStore()
 
 const text = ref('')
-const rotate = ref(0)
 
-function rotateText() {
-  //console.log('rotateText', rotate.value)
-  update({ rotate: rotate.value })
+function rotateText(value: number) {
+  update({ rotate: value })
 }
 
-function submitText() {
-  update({ content: text.value })
+function alignText(value: string) {
+  update({ textAnchor: value })
+}
+
+function changeBackgroundColor(value: string) {
+  update({ backgroundColor: value })
+}
+
+function changeFontColorChange(value: string) {
+  update({ fontColor: value })
+}
+
+function changeFontSize(value: number) {
+  update({ fontSize: value })
 }
 
 watch(
-  () => [selectedSVGObjectIndex.value],
+  () => [selectedSVGObject.value],
   async () => {
-    if (selectedSVGObjectIndex.value) {
-      const svgObject = getSVGObjectByIndex(selectedSVGObjectIndex.value)
-      text.value = svgObject.content
+    if (selectedSVGObject.value) {
+      text.value = selectedSVGObject.value.content
     }
   },
   { immediate: true }
 )
-
-onMounted(() => {
-  const svgObject = getSVGObjectByIndex(selectedSVGObjectIndex.value)
-  text.value = svgObject.content
-})
 </script>
 <template>
-  <v-color-picker :modes="['hexa']"></v-color-picker>
-  <v-slider
-    v-model="rotate"
-    prepend-icon="mdi-restore"
-    max="360"
-    min="0"
-    @start="rotateText"
-    @update:model-value="rotateText"
-  ></v-slider>
-  <v-textarea v-model="text" variant="outlined"></v-textarea>
-  <v-btn @click="submitText">Update</v-btn>
+  <v-card>
+    <v-card-text>
+      <div class="d-flex my-1">
+        <v-btn-toggle
+          variant="outlined"
+          divided
+          :model-value="selectedSVGObject?.textAnchor"
+          @update:model-value="alignText"
+        >
+          <v-btn icon="mdi-format-align-left" value="start"></v-btn>
+          <v-btn icon="mdi-format-align-center" value="middle"></v-btn>
+          <v-btn icon="mdi-format-align-right" value="end"></v-btn>
+        </v-btn-toggle>
+        <v-btn-group divided class="ml-1" variant="outlined">
+          <ColorPicker
+            :color="selectedSVGObject?.fontColor"
+            icon="mdi-format-color-text"
+            @onChange="changeFontColorChange"
+          />
+          <ColorPicker
+            :color="selectedSVGObject?.backgroundColor"
+            icon="mdi-format-color-fill"
+            @onChange="changeBackgroundColor"
+          />
+          <EditTextModal />
+        </v-btn-group>
+      </div>
+      <div class="my-1">
+        <v-btn-group divided variant="outlined">
+          <TextRotateSlider :rotate="selectedSVGObject?.rotate || 0" @onChange="rotateText" />
+          <FontSizeSelector :selected-font-size="selectedSVGObject?.fontSize" @onChange="changeFontSize" />
+          <v-btn icon="mdi-trash-can-outline"></v-btn>
+        </v-btn-group>
+      </div>
+    </v-card-text>
+  </v-card>
 </template>

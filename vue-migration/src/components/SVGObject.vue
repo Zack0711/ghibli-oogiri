@@ -15,7 +15,7 @@ const props = defineProps<{
       ',' +
       payload.position.y +
       ') rotate(' +
-      payload.rotate +
+      (payload.rotate || 0) +
       ')'
     "
   >

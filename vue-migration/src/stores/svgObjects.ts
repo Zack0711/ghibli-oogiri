@@ -10,6 +10,7 @@ export const useSVGObjectsStore = defineStore('svgObjects', () => {
   const list: Ref<SVGObjectPayload[]> = ref([])
   const selectedSVGObjectIndex = ref(0)
   const selectedSVGObjectType = computed(() => list.value[selectedSVGObjectIndex.value]?.type || '')
+  const selectedSVGObject = computed(() => list.value[selectedSVGObjectIndex.value] || null)
 
   function create(payload: SVGObjectPayload) {
     selectedSVGObjectIndex.value = list.value.length
@@ -47,6 +48,7 @@ export const useSVGObjectsStore = defineStore('svgObjects', () => {
     list,
     selectedSVGObjectIndex,
     selectedSVGObjectType,
+    selectedSVGObject,
     create,
     update,
     moveSVGObject,
@@ -59,12 +61,14 @@ export default () => {
   if (!store) {
     store = useSVGObjectsStore()
   }
-  const { list, selectedSVGObjectIndex, selectedSVGObjectType } = storeToRefs(store)
+  const { list, selectedSVGObjectIndex, selectedSVGObjectType, selectedSVGObject } =
+    storeToRefs(store)
   const { create, update, moveSVGObject, setSelectedSVGObjectIndex, getSVGObjectByIndex } = store
   return {
     list,
     selectedSVGObjectIndex,
     selectedSVGObjectType,
+    selectedSVGObject,
     create,
     update,
     moveSVGObject,

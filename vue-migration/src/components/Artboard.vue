@@ -50,13 +50,20 @@ function move(e) {
 }
 </script>
 <template>
-  <div @mousemove="move" @touchmove="move" class="svg-wrapper">
+  <div @mousemove="move" @touchmove="move" class="d-flex">
     <svg
       :width="artboardSize.width"
       :height="artboardSize.height"
       :viewBox="'0 0 ' + artboardSize.width + ' ' + artboardSize.height"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <defs>
+        <filter id="shadow-filter" x="0" y="0" width="150%" height="150%" opacity="0.5">
+          <feOffset result="offOut" in="SourceAlpha" dx="0" dy="0" />
+          <feGaussianBlur result="blurOut" in="offOut" stdDeviation="2" />
+          <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+        </filter>
+      </defs>
       <g
         ref="rootRef"
         @touchstart="handleMouseTouchDown"
@@ -76,8 +83,3 @@ function move(e) {
     </svg>
   </div>
 </template>
-<style scoped>
-.svg-wrapper {
-  display: flex;
-}
-</style>
