@@ -61,6 +61,8 @@ body {
   box-sizing: border-box;
 }
 
+
+
 body,
 #root{
 }
@@ -69,6 +71,8 @@ body,
   font-family: 'font-jf-openhuninn';
   font-family: 'font-jf-openhuninn';
   src: url('./font/jf-openhuninn-11.woff?59488976') format('woff');
+  src: url('./font/jf-openhuninn-11.woff?59488976') format('woff');
+  font-family: 'font-jf-openhuninn';
 }
 
 @font-face {
